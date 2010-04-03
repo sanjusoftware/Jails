@@ -21,9 +21,8 @@ public class JailsProjectTest {
 
     @Before
     public void setUp() {
-        path = "E:";
+        path = "test";
         projectName = "JailsProjectTest";
-        deleteProjectStructure(path, projectName);
     }
 
     @After

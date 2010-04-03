@@ -3,6 +3,8 @@ package org.jailsframework.generators;
 import org.jailsframework.exceptions.InvalidPathException;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -30,8 +32,25 @@ public class JailsProject {
             makeConfigFolder();
             makeDbFolder();
             makeMigrationsFolder();
+            createDatabasePropertiesFile();
         } else {
             throw new InvalidPathException("The project path : " + path + " is does not exists");
+        }
+    }
+
+    private void createDatabasePropertiesFile() {
+        File databasePropertiesFile = new File(getProjectRoot() + "\\config", "database.properties");
+        try {
+            databasePropertiesFile.createNewFile();
+            FileWriter fileWriter = new FileWriter(databasePropertiesFile);
+            fileWriter.write("development.adapter=mysql\n" +
+                    "development.database=jails_development\n" +
+                    "development.username=root\n" +
+                    "development.password=password");
+            fileWriter.flush();
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

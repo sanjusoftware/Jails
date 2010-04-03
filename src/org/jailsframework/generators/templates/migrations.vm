@@ -1,0 +1,15 @@
+package $package;
+
+import org.jailsframework.database.IDBMigrations;
+
+public class $migrationFileName implements IDBMigrations {
+
+    public void up() {
+
+    }
+
+    public void down() {
+
+    }
+
+}

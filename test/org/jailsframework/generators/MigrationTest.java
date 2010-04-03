@@ -15,12 +15,14 @@ public class MigrationTest {
 
     @Before
     public void setup() {
-        System.setProperty("JAILS_ROOT", "test");
+        System.setProperty("JAILS_ROOT", "test\\JailsProjectTest");
+        System.setProperty("APP_NAME", "JailsProjectTest");
     }
 
     @After
     public void tearDown() {
         System.setProperty("JAILS_ROOT", "");
+        System.setProperty("APP_NAME", "");
     }
 
     @Test

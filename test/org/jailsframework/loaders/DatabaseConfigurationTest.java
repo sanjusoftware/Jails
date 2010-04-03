@@ -16,7 +16,7 @@ public class DatabaseConfigurationTest {
 
     @Before
     public void setup() {
-        System.setProperty("JAILS_ROOT", "test");
+        System.setProperty("JAILS_ROOT", "test\\JailsProjectTest");
         System.setProperty("JAILS_ENV", "development");
     }
 
