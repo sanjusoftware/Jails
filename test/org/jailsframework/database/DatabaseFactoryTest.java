@@ -1,5 +1,6 @@
 package org.jailsframework.database;
 
+import junit.framework.Assert;
 import org.jailsframework.exceptions.UnsupportedDatabaseException;
 import org.junit.Test;
 
@@ -14,5 +15,11 @@ public class DatabaseFactoryTest {
     @Test(expected = UnsupportedDatabaseException.class)
     public void shouldThroughUnsupportedDatabaseExceptionIfAdapterNotSupported() {
         new DatabaseFactory(this.toString()).getDatabase(null, null, null);
+    }
+
+    @Test
+    public void shouldReturnMySQLDatabaseInstanceIfGivenMYSQLAdapter() {
+        Assert.assertTrue(
+                new DatabaseFactory("mysql").getDatabase(null, null, null) instanceof MysqlDatabase);
     }
 }

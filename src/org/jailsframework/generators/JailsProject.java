@@ -20,8 +20,7 @@ public class JailsProject {
     }
 
     public void generateStructure() {
-        if(new File(path).exists())
-        {
+        if (new File(path).exists()) {
             makeProjectRootFolder();
             makeAppFolder();
             makeModelsFolder();
@@ -30,11 +29,14 @@ public class JailsProject {
             makeHelpersFolder();
             makeConfigFolder();
             makeDbFolder();
-        }
-        else
-        {
+            makeMigrationsFolder();
+        } else {
             throw new InvalidPathException("The project path : " + path + " is does not exists");
         }
+    }
+
+    private void makeMigrationsFolder() {
+        makeDirectory(getProjectRoot() + "\\db\\migrate");
     }
 
     private void makeDbFolder() {
