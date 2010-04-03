@@ -9,6 +9,7 @@ package org.jailsframework.loaders;
 import org.jailsframework.database.Database;
 import org.jailsframework.database.DatabaseFactory;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -35,6 +36,7 @@ public class DatabaseConfiguration {
     private void loadDatabaseProperties() {
 
         String propertiesFile = System.getProperty("JAILS_ROOT").concat("\\config\\database.properties");
+        File file = new File(propertiesFile);
         try {
             prop = new Properties();
             prop.load(new FileInputStream(propertiesFile));

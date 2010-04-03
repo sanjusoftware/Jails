@@ -2,6 +2,7 @@ package org.jailsframework.loaders;
 
 import junit.framework.Assert;
 import org.jailsframework.database.Database;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,13 +16,22 @@ public class DatabaseConfigurationTest {
 
     @Before
     public void setup() {
-        System.setProperty("JAILS_ROOT", "D:\\projects\\java\\Jails");
+        System.setProperty("JAILS_ROOT", "test");
         System.setProperty("JAILS_ENV", "development");
+    }
+
+    @After
+    public void tearDown() {
+        System.setProperty("JAILS_ROOT", "");
+        System.setProperty("JAILS_ENV", "");
     }
 
     @Test
     public void shouldReadTheDatabasePropertiesFileAndLoadTheDatabaseConfiguration() {
         Database database = DatabaseConfiguration.getInstance().getDatabase();
         Assert.assertEquals("mysql", database.getAdapter());
+        Assert.assertEquals("root", database.getUsername());
+        Assert.assertEquals("password", database.getPassword());
+        Assert.assertEquals("jails_development", database.getDatabase());
     }
 }
