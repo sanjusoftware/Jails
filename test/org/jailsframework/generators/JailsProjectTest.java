@@ -2,17 +2,16 @@ package org.jailsframework.generators;
 
 import junit.framework.Assert;
 import org.jailsframework.exceptions.InvalidPathException;
+import org.jailsframework.util.TestHelper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
-
 /**
- * Created by IntelliJ IDEA.
- * User: Sanjeev Mishra
- * Date: Mar 30, 2010
- * Time: 11:20:27 PM
+ * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
+ * @version $Revision: 0.1
+ *          Date: Apr 4, 2010
+ *          Time: 12:51:30 PM
  */
 
 public class JailsProjectTest {
@@ -27,21 +26,16 @@ public class JailsProjectTest {
 
     @After
     public void tearDown() {
-        deleteProjectStructure(path, projectName);
+        TestHelper.deleteJailsProjectStructure(path, projectName);
     }
 
     @Test
     public void shouldGenerateAnMVCJavaProjectForValidProjectPath() {
-        new JailsProject(path, projectName).generateStructure();
-        Assert.assertTrue(true);
+        Assert.assertTrue(new JailsProject(path, projectName).generateStructure());
     }
 
     @Test(expected = InvalidPathException.class)
     public void shouldRaiseInvalidPathExceptionForWrongProjectPath() {
         new JailsProject("InvalidPath", projectName).generateStructure();
-    }
-
-    private void deleteProjectStructure(String path, String projectName) {
-        new File(path + "\\" + projectName).delete();
     }
 }

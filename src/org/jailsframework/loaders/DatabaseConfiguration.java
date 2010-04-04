@@ -46,7 +46,9 @@ public class DatabaseConfiguration {
 
     public Database getDatabase() {
         if (database == null) {
-            database = new DatabaseFactory(getAdapterName()).getDatabase(getDatabaseName(),
+            database = new DatabaseFactory(
+                    getAdapterName()).getDatabase(
+                    getDatabaseName(),
                     getUserName(),
                     getPassword());
         }

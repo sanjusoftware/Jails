@@ -21,24 +21,24 @@ public class JailsProject {
         this.projectName = projectName;
     }
 
-    public void generateStructure() {
+    public boolean generateStructure() {
         if (new File(path).exists()) {
-            makeProjectRootFolder();
-            makeAppFolder();
-            makeModelsFolder();
-            makeControllersFolder();
-            makeViewsFolder();
-            makeHelpersFolder();
-            makeConfigFolder();
-            makeDbFolder();
-            makeMigrationsFolder();
-            createDatabasePropertiesFile();
+            return makeProjectRootFolder() &&
+                    makeAppFolder() &&
+                    makeModelsFolder() &&
+                    makeControllersFolder() &&
+                    makeViewsFolder() &&
+                    makeHelpersFolder() &&
+                    makeConfigFolder() &&
+                    makeDbFolder() &&
+                    makeMigrationsFolder() &&
+                    createDatabasePropertiesFile();
         } else {
             throw new InvalidPathException("The project path : " + path + " is does not exists");
         }
     }
 
-    private void createDatabasePropertiesFile() {
+    private boolean createDatabasePropertiesFile() {
         File databasePropertiesFile = new File(getProjectRoot() + "\\config", "database.properties");
         try {
             databasePropertiesFile.createNewFile();
@@ -49,52 +49,54 @@ public class JailsProject {
                     "development.password=password");
             fileWriter.flush();
             fileWriter.close();
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
-    private void makeMigrationsFolder() {
-        makeDirectory(getProjectRoot() + "\\db\\migrate");
+    private boolean makeMigrationsFolder() {
+        return makeDirectory(getProjectRoot() + "\\db\\migrate");
     }
 
-    private void makeDbFolder() {
-        makeDirectory(getProjectRoot() + "\\db");
+    private boolean makeDbFolder() {
+        return makeDirectory(getProjectRoot() + "\\db");
     }
 
-    private void makeConfigFolder() {
-        makeDirectory(getProjectRoot() + "\\config");
+    private boolean makeConfigFolder() {
+        return makeDirectory(getProjectRoot() + "\\config");
     }
 
-    private void makeHelpersFolder() {
-        makeDirectory(getProjectRoot() + "\\app\\helpers");
+    private boolean makeHelpersFolder() {
+        return makeDirectory(getProjectRoot() + "\\app\\helpers");
     }
 
-    private void makeViewsFolder() {
-        makeDirectory(getProjectRoot() + "\\app\\views");
+    private boolean makeViewsFolder() {
+        return makeDirectory(getProjectRoot() + "\\app\\views");
     }
 
-    private void makeControllersFolder() {
-        makeDirectory(getProjectRoot() + "\\app\\controllers");
+    private boolean makeControllersFolder() {
+        return makeDirectory(getProjectRoot() + "\\app\\controllers");
     }
 
-    private void makeModelsFolder() {
-        makeDirectory(getProjectRoot() + "\\app\\models");
+    private boolean makeModelsFolder() {
+        return makeDirectory(getProjectRoot() + "\\app\\models");
     }
 
-    private void makeAppFolder() {
-        makeDirectory(getProjectRoot() + "\\app");
+    private boolean makeAppFolder() {
+        return makeDirectory(getProjectRoot() + "\\app");
     }
 
     private String getProjectRoot() {
         return path + "\\" + projectName;
     }
 
-    private void makeProjectRootFolder() {
-        makeDirectory(getProjectRoot());
+    private boolean makeProjectRootFolder() {
+        return makeDirectory(getProjectRoot());
     }
 
-    private void makeDirectory(String dirPath) {
-        new File(dirPath).mkdir();
+    private boolean makeDirectory(String dirPath) {
+        return new File(dirPath).mkdir();
     }
 }
