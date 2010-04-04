@@ -14,20 +14,21 @@ import java.util.Date;
  *          Date: Apr 4, 2010
  *          Time: 12:21:35 AM
  */
-public class Migration {
-    private File migrationFile;
-    private String migrationFileNameWithTimeStamp;
+public class MigrationGenerator {
+    private JailsProject project;
 
-    public Migration(String migrationFileName) {
-        this.migrationFileNameWithTimeStamp = getMigrationFileNameWithTimeStamp(migrationFileName);
+    public MigrationGenerator(JailsProject project) {
+        this.project = project;
     }
 
-    public boolean generate() {
+    public boolean generate(String migrationFileName) {
         try {
-            migrationFile = new File(getMigrationsPath(),
-                    migrationFileNameWithTimeStamp.concat(".java"));
+            long version = getMigrationVersion();
+            String migrationFileNameWithVersion = getMigrationFileNameWithVersion(version, migrationFileName);
+            File migrationFile = new File(project.getMigrationsPath(),
+                    migrationFileNameWithVersion.concat(".java"));
             migrationFile.createNewFile();
-            writeMigrationContent();
+            writeMigrationContent(migrationFile, migrationFileNameWithVersion, version);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -35,13 +36,14 @@ public class Migration {
         }
     }
 
-    private void writeMigrationContent() throws Exception {
+    private void writeMigrationContent(File migrationFile, String migrationFileNameWithTimeStamp, long version) throws Exception {
         VelocityEngine velocityEngine = new VelocityEngine();
         velocityEngine.init();
-        Template template = velocityEngine.getTemplate("\\src\\org\\jailsframework\\generators\\templates\\migrations.vm");
+        Template template = velocityEngine.getTemplate("\\src\\org\\jailsframework\\generators\\templates\\migration.vm");
         VelocityContext context = new VelocityContext();
         context.put("migrationFileName", migrationFileNameWithTimeStamp);
         context.put("package", getMigrationPackage());
+        context.put("version", version + "L");
         FileWriter fileWriter = new FileWriter(migrationFile);
         template.merge(context, fileWriter);
         fileWriter.flush();
@@ -50,18 +52,15 @@ public class Migration {
     }
 
     private String getMigrationPackage() {
-        return System.getProperty("APP_NAME").concat(".db.migrate");
+        return project.getName().toLowerCase().concat(".db.migrate");
     }
 
-    private String getMigrationFileNameWithTimeStamp(String migrationFileName) {
-        return "Migration_" + getCurrentTimeStamp() + "_".concat(migrationFileName);
+    private String getMigrationFileNameWithVersion(long version, String migrationFileName) {
+        return "Migration_" + version + "_".concat(migrationFileName);
     }
 
-    private long getCurrentTimeStamp() {
+    private long getMigrationVersion() {
         return new Date().getTime();
     }
 
-    private String getMigrationsPath() {
-        return System.getProperty("JAILS_ROOT").concat("\\db\\migrate");
-    }
 }

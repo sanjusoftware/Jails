@@ -1,10 +1,10 @@
 package org.jailsframework.exceptions;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Sanjeev Mishra
- * Date: Mar 31, 2010
- * Time: 12:09:10 AM
+ * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
+ * @version $Revision: 0.1
+ *          Date: Apr 3, 2010
+ *          Time: 6:30:51 PM
  */
 public class InvalidPathException extends RuntimeException {
 

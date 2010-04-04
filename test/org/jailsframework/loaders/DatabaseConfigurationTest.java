@@ -2,7 +2,7 @@ package org.jailsframework.loaders;
 
 import junit.framework.Assert;
 import org.jailsframework.database.Database;
-import org.jailsframework.util.TestHelper;
+import org.jailsframework.generators.JailsProject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,24 +14,22 @@ import org.junit.Test;
  *          Time: 2:50:13 PM
  */
 public class DatabaseConfigurationTest {
+    JailsProject project;
 
     @Before
-    public void setup() {
-        TestHelper.generateJailsProjectStructure("test", "JailsProjectTest");
-        System.setProperty("JAILS_ROOT", "test\\JailsProjectTest");
-        System.setProperty("JAILS_ENV", "development");
+    public void setUp() {
+        project = new JailsProject("test", "jailsproject");
+        project.create();
     }
 
     @After
     public void tearDown() {
-        TestHelper.deleteJailsProjectStructure("test", "JailsProjectTest");
-        System.setProperty("JAILS_ROOT", "");
-        System.setProperty("JAILS_ENV", "");
+        project.destroy();
     }
 
     @Test
     public void shouldReadTheDatabasePropertiesFileAndLoadTheDatabaseConfiguration() {
-        Database database = DatabaseConfiguration.getInstance().getDatabase();
+        Database database = DatabaseConfiguration.getInstance(project).getDatabase();
         Assert.assertEquals("mysql", database.getAdapter());
         Assert.assertEquals("root", database.getUsername());
         Assert.assertEquals("password", database.getPassword());

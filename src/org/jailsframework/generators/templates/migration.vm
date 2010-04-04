@@ -1,0 +1,20 @@
+package $package;
+
+import org.jailsframework.database.Migration;
+
+public class $migrationFileName extends Migration {
+
+    private final Long version = $version;
+
+    public void up() {
+
+    }
+
+    public void down() {
+
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+}

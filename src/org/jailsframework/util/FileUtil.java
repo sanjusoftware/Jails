@@ -21,4 +21,8 @@ public class FileUtil {
         }
         return dir.delete();
     }
+
+    public static boolean makeDirectory(String dir) {
+        return new File(dir).mkdir();
+    }
 }
