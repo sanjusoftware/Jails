@@ -1,6 +1,7 @@
 package org.jailsframework.util;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
@@ -23,6 +24,20 @@ public class FileUtil {
     }
 
     public static boolean makeDirectory(String dir) {
-        return new File(dir).mkdir();
+        boolean dirCreated = new File(dir).mkdir();
+        if (!dirCreated) {
+            System.out.println("Error creating dir = " + dir);
+        }
+        return dirCreated;
+    }
+
+    public static boolean createFile(File file) {
+        try {
+            return file.createNewFile();
+        } catch (IOException e) {
+            System.out.println("Error creating the file = " + file.getAbsolutePath());
+            e.printStackTrace();
+            return false;
+        }
     }
 }

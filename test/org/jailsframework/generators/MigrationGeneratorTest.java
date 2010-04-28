@@ -1,8 +1,7 @@
 package org.jailsframework.generators;
 
 import junit.framework.Assert;
-import org.junit.After;
-import org.junit.Before;
+import org.jailsframework.JailsProjectTestBase;
 import org.junit.Test;
 
 import java.io.File;
@@ -14,19 +13,7 @@ import java.io.File;
  *          Time: 12:08:43 AM
  */
 
-public class MigrationGeneratorTest {
-    JailsProject project;
-
-    @Before
-    public void setUp() {
-        project = new JailsProject("test", "jailsproject");
-        project.create();
-    }
-
-    @After
-    public void tearDown() {
-        project.destroy();
-    }
+public class MigrationGeneratorTest extends JailsProjectTestBase {
 
     @Test
     public void shouldGenerateNewMigrationWithTheGivenName() {

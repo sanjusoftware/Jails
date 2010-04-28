@@ -1,8 +1,8 @@
 package org.jailsframework.generators;
 
 import junit.framework.Assert;
+import org.jailsframework.JailsProjectTestBase;
 import org.jailsframework.exceptions.InvalidPathException;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,24 +15,21 @@ import java.io.File;
  *          Time: 12:51:30 PM
  */
 
-public class JailsProjectTest {
-    JailsProject project;
+public class JailsProjectTest extends JailsProjectTestBase {
 
     @Before
     public void setUp() {
         project = new JailsProject("test", "jailsproject");
     }
 
-    @After
-    public void tearDown() {
-        project.destroy();
-    }
-
     @Test
     public void shouldGenerateAnMVCJavaProjectForValidProjectPath() {
-        Assert.assertTrue(project.create());
-        Assert.assertTrue("The versions.properties file is not generated", new File(project.getDbPath().concat("\\versions.properties")).exists());
-        Assert.assertTrue("The database.properties file is not generated", new File(project.getConfigPath().concat("\\database.properties")).exists());
+        boolean b = project.create();
+        Assert.assertTrue(b);
+        Assert.assertTrue("The versions.properties file is not generated",
+                new File(project.getDbPath().concat("\\versions.properties")).exists());
+        Assert.assertTrue("The database.properties file is not generated",
+                new File(project.getConfigPath().concat("\\database.properties")).exists());
     }
 
     @Test(expected = InvalidPathException.class)

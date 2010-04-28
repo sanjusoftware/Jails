@@ -1,8 +1,8 @@
 package org.jailsframework.database;
 
 import junit.framework.Assert;
+import org.jailsframework.JailsProjectTestBase;
 import org.jailsframework.generators.JailsProject;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,8 +15,7 @@ import java.util.List;
  *          Date: Apr 4, 2010
  *          Time: 3:15:13 PM
  */
-public class MigratorTest {
-    JailsProject project;
+public class MigratorTest extends JailsProjectTestBase {
 
     @Before
     public void setUp() {
@@ -32,11 +31,6 @@ public class MigratorTest {
             }
         };
         project.create();
-    }
-
-    @After
-    public void tearDown() {
-        project.destroy();
     }
 
     @Test
