@@ -7,5 +7,5 @@ package org.jailsframework.database.querybuilder;
  *          Time: 8:00:14 PM
  */
 public enum Operator {
-    AND
+    OR, AND
 }

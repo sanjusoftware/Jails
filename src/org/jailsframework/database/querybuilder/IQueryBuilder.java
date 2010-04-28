@@ -16,4 +16,6 @@ public interface IQueryBuilder {
     IQueryBuilder where(Where whereClause);
 
     IQueryBuilder and(Where whereClause);
+
+    IQueryBuilder or(Where where);
 }

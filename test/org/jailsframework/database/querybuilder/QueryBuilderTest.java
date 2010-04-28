@@ -24,10 +24,19 @@ public class QueryBuilderTest {
 
     @Test
     public void shouldBuildTheSelectQueryGivenTheTableNameColumnsAndWhereClauses() {
-        assertEquals("SELECT name, age FROM EMPLOYEE WHERE ( id = 10 ) ;", new Select().from("EMPLOYEE").columns("name, age").where(new Where("id", "10", Integer.class)).build());
-        assertEquals("SELECT name, age FROM EMPLOYEE WHERE ( id = 10 ) ;", new Select().columns("name, age").where(new Where("id", "10", Integer.class)).from("EMPLOYEE").build());
-        assertEquals("SELECT name, age FROM EMPLOYEE WHERE ( age = 25 ) AND ( name = 'Sanjeev' ) ;",
+        assertEquals("SELECT name, age FROM EMPLOYEE WHERE ( id = 10 );", new Select().from("EMPLOYEE").columns("name, age").where(new Where("id", "10", Integer.class)).build());
+        assertEquals("SELECT name, age FROM EMPLOYEE WHERE ( id = 10 );", new Select().columns("name, age").where(new Where("id", "10", Integer.class)).from("EMPLOYEE").build());
+
+        assertEquals("SELECT name, age FROM EMPLOYEE WHERE ( age = 25 ) AND ( name = 'Sanjeev' );",
                 new Select().columns("name, age").where(new Where("age", "25", Integer.class))
                         .and(new Where("name", "Sanjeev", String.class)).from("EMPLOYEE").build());
+
+        assertEquals("SELECT name, age FROM EMPLOYEE WHERE ( age = 25 ) OR ( name = 'Sanjeev' );",
+                new Select().columns("name, age").where(new Where("age", "25", Integer.class))
+                        .or(new Where("name", "Sanjeev", String.class)).from("EMPLOYEE").build());
+
+        assertEquals("SELECT name, age FROM EMPLOYEE WHERE ( age = 25 AND ( name = 'Sanjeev' ) );",
+                new Select().columns("name, age").where(new Where("age", "25", Integer.class)
+                        .and(new Where("name", "Sanjeev", String.class))).from("EMPLOYEE").build());
     }
 }

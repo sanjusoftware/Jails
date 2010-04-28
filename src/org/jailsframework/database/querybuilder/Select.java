@@ -27,11 +27,21 @@ public class Select implements ISelectQueryBuilder {
 
     public IQueryBuilder and(Where whereClause) {
         whereClause.setOperator(Operator.AND);
+        addWhereClause(whereClause);
+        return this;
+    }
+
+    public IQueryBuilder or(Where whereClause) {
+        whereClause.setOperator(Operator.OR);
+        addWhereClause(whereClause);
+        return this;
+    }
+
+    private void addWhereClause(Where whereClause) {
         if (whereClauses == null) {
             whereClauses = new ArrayList<Where>();
         }
         whereClauses.add(whereClause);
-        return this;
     }
 
     public String build() {
@@ -47,7 +57,7 @@ public class Select implements ISelectQueryBuilder {
         return columns == null ? "*" : columns;
     }
 
-    public String getWhereClauses() {
+    private String getWhereClauses() {
         if (whereClauses == null) return "";
         String fullWhereClause = " WHERE";
         for (Where whereClause : whereClauses) {
