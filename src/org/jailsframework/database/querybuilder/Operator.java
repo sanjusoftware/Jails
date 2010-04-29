@@ -7,5 +7,10 @@ package org.jailsframework.database.querybuilder;
  *          Time: 8:00:14 PM
  */
 public enum Operator {
-    OR, AND
+    OR, AND;
+    public static final String GREATER_THAN_EQUALS_TO = " >= ";
+    public static final String GREATER_THAN = " > ";
+    public static final String EQUALS = " = ";
+    public static final String LESS_THAN_EQUALS_TO = " <= ";
+    public static final String LESS_THAN = " < ";
 }

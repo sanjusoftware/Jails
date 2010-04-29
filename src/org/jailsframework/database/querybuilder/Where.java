@@ -14,16 +14,30 @@ public class Where {
     private Object type;
     private Operator operator;
     private ArrayList<Where> whereClauses;
+    private String valueOperator;
 
     public Where(String columnName, String value, Object type) {
+        this(columnName, value, Operator.EQUALS, type);
+    }
+
+    public Where(String columnName, String value, String valueOperator, Object type) {
         this.columnName = columnName;
         this.value = value;
         this.type = type;
+        this.valueOperator = valueOperator;
     }
 
     @Override
     public String toString() {
-        return getOperator() + " ( " + columnName + " = " + getValue() + getWhereClauses() + " )";
+        return getOperator() + getOpenParenthesis() + columnName + valueOperator + getValue() + getWhereClauses() + getClosingParenthesis();
+    }
+
+    private String getClosingParenthesis() {
+        return whereClauses == null ? "" : ")";
+    }
+
+    private String getOpenParenthesis() {
+        return whereClauses == null ? " " : " (";
     }
 
     public void setOperator(Operator operator) {
@@ -44,6 +58,12 @@ public class Where {
         return this;
     }
 
+    public Where or(Where whereClause) {
+        whereClause.setOperator(Operator.OR);
+        addWhereClause(whereClause);
+        return this;
+    }
+
     private void addWhereClause(Where whereClause) {
         if (whereClauses == null) {
             whereClauses = new ArrayList<Where>();
@@ -59,5 +79,4 @@ public class Where {
         }
         return internalWhereClause;
     }
-
 }
