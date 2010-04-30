@@ -16,6 +16,10 @@ public class Where {
     private ArrayList<Where> whereClauses;
     private String valueOperator;
 
+    public Where(String columnName, String value) {
+        this(columnName, value, String.class);
+    }
+
     public Where(String columnName, String value, Object type) {
         this(columnName, value, Operator.EQUALS, type);
     }
@@ -29,7 +33,26 @@ public class Where {
 
     @Override
     public String toString() {
-        return getOperator() + getOpenParenthesis() + columnName + valueOperator + getValue() + getWhereClauses() + getClosingParenthesis();
+        return getOperator() + getOpenParenthesis() + columnName + valueOperator
+                + getValue() + getWhereClauses() + getClosingParenthesis();
+    }
+
+    protected void setOperator(Operator operator) {
+        this.operator = operator;
+    }
+
+    public Where and(Where whereClause) {
+        addWhereClause(whereClause, Operator.AND);
+        return this;
+    }
+
+    public Where or(Where whereClause) {
+        addWhereClause(whereClause, Operator.OR);
+        return this;
+    }
+
+    private String getValue() {
+        return type.equals(String.class) ? "'" + value + "'" : value;
     }
 
     private String getClosingParenthesis() {
@@ -40,31 +63,12 @@ public class Where {
         return whereClauses == null ? " " : " (";
     }
 
-    public void setOperator(Operator operator) {
-        this.operator = operator;
-    }
-
     private String getOperator() {
         return operator == null ? "" : " " + operator.toString();
     }
 
-    public String getValue() {
-        return type.equals(String.class) ? "'" + value + "'" : value;
-    }
-
-    public Where and(Where whereClause) {
-        whereClause.setOperator(Operator.AND);
-        addWhereClause(whereClause);
-        return this;
-    }
-
-    public Where or(Where whereClause) {
-        whereClause.setOperator(Operator.OR);
-        addWhereClause(whereClause);
-        return this;
-    }
-
-    private void addWhereClause(Where whereClause) {
+    private void addWhereClause(Where whereClause, final Operator operator) {
+        whereClause.setOperator(operator);
         if (whereClauses == null) {
             whereClauses = new ArrayList<Where>();
         }

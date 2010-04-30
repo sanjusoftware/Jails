@@ -26,18 +26,17 @@ public class Select implements ISelectQueryBuilder {
     }
 
     public IQueryBuilder and(Where whereClause) {
-        whereClause.setOperator(Operator.AND);
-        addWhereClause(whereClause);
+        addWhereClause(whereClause, Operator.AND);
         return this;
     }
 
     public IQueryBuilder or(Where whereClause) {
-        whereClause.setOperator(Operator.OR);
-        addWhereClause(whereClause);
+        addWhereClause(whereClause, Operator.OR);
         return this;
     }
 
-    private void addWhereClause(Where whereClause) {
+    private void addWhereClause(Where whereClause, final Operator operator) {
+        whereClause.setOperator(operator);
         if (whereClauses == null) {
             whereClauses = new ArrayList<Where>();
         }

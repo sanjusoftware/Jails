@@ -10,7 +10,7 @@ import static junit.framework.Assert.assertEquals;
  *          Date: Apr 28, 2010
  *          Time: 12:06:19 PM
  */
-public class QueryBuilderTest {
+public class SelectTest {
     @Test
     public void shouldBuildTheSelectQueryGivenTheTableName() {
         assertEquals("SELECT * FROM EMPLOYEE;", new Select().from("EMPLOYEE").build());
@@ -44,7 +44,7 @@ public class QueryBuilderTest {
     public void shouldBuildTheSelectQueryGivenMultipleExternalWhereClausesAddedWithANDOperator() {
         assertEquals("SELECT name, age FROM EMPLOYEE WHERE age = 25 AND name = 'Sanjeev';",
                 new Select().columns("name, age").where(new Where("age", "25", Integer.class))
-                        .and(new Where("name", "Sanjeev", String.class)).from("EMPLOYEE").build());
+                        .and(new Where("name", "Sanjeev")).from("EMPLOYEE").build());
     }
 
     @Test
@@ -53,7 +53,7 @@ public class QueryBuilderTest {
                 new Select().columns("name, age")
                         .from("EMPLOYEE")
                         .where(new Where("age", "25", Integer.class))
-                        .or(new Where("name", "Sanjeev", String.class))
+                        .or(new Where("name", "Sanjeev"))
                         .build());
     }
 
@@ -63,7 +63,7 @@ public class QueryBuilderTest {
                 new Select().columns("name, age")
                         .from("EMPLOYEE")
                         .where(new Where("age", "25", Integer.class))
-                        .or(new Where("name", "Sanjeev", String.class))
+                        .or(new Where("name", "Sanjeev"))
                         .and(new Where("sal", "25000", Integer.class))
                         .build());
     }
@@ -74,7 +74,7 @@ public class QueryBuilderTest {
                 new Select().columns("name, age")
                         .from("EMPLOYEE")
                         .where(new Where("age", "25", Integer.class)
-                                .and(new Where("name", "Sanjeev", String.class)))
+                                .and(new Where("name", "Sanjeev")))
                         .build());
     }
 
@@ -84,7 +84,7 @@ public class QueryBuilderTest {
                 new Select().columns("name, age")
                         .from("EMPLOYEE")
                         .where(new Where("age", "25", Integer.class)
-                                .or(new Where("name", "Sanjeev", String.class)))
+                                .or(new Where("name", "Sanjeev")))
                         .build());
     }
 
@@ -94,8 +94,8 @@ public class QueryBuilderTest {
                 new Select().columns("name, age")
                         .from("EMPLOYEE")
                         .where(new Where("age", "25", Integer.class)
-                                .or(new Where("name", "Sanjeev", String.class))
-                                .and(new Where("sal", "25000", String.class)))
+                                .or(new Where("name", "Sanjeev"))
+                                .and(new Where("sal", "25000")))
                         .build());
     }
 
@@ -105,7 +105,7 @@ public class QueryBuilderTest {
                 new Select().columns("name, age")
                         .from("EMPLOYEE")
                         .where(new Where("age", "25", Integer.class)
-                                .or(new Where("name", "Sanjeev", String.class)
+                                .or(new Where("name", "Sanjeev")
                                 .and(new Where("sal", "25000", Integer.class))))
                         .build());
     }
@@ -116,9 +116,9 @@ public class QueryBuilderTest {
                 new Select().columns("name, age")
                         .from("EMPLOYEE")
                         .where(new Where("age", "25", Integer.class)
-                                .or(new Where("name", "Sanjeev", String.class))
+                                .or(new Where("name", "Sanjeev"))
                                 .and(new Where("sal", "25000", Integer.class)))
-                        .and(new Where("color", "Brown", String.class))
+                        .and(new Where("color", "Brown"))
                         .build());
     }
 
@@ -128,9 +128,9 @@ public class QueryBuilderTest {
                 new Select().columns("name, age")
                         .from("EMPLOYEE")
                         .where(new Where("age", "25", Operator.GREATER_THAN_EQUALS_TO, Integer.class)
-                                .or(new Where("name", "Sanjeev", String.class))
+                                .or(new Where("name", "Sanjeev"))
                                 .and(new Where("sal", "25000", Operator.LESS_THAN_EQUALS_TO, Integer.class)))
-                        .and(new Where("color", "Brown", String.class))
+                        .and(new Where("color", "Brown"))
                         .build());
     }
 }
