@@ -7,4 +7,13 @@ package org.jailsframework.database.querybuilder;
  *          Time: 12:22:37 PM
  */
 public interface ISelectQueryBuilder extends IQueryBuilder {
+    ISelectQueryBuilder columns(String columns);
+
+    ISelectQueryBuilder from(String table);
+
+    ISelectQueryBuilder where(Where whereClause);
+
+    ISelectQueryBuilder and(Where where);
+
+    ISelectQueryBuilder or(Where where);
 }

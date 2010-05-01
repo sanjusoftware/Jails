@@ -8,14 +8,4 @@ package org.jailsframework.database.querybuilder;
  */
 public interface IQueryBuilder {
     String build();
-
-    IQueryBuilder columns(String columns);
-
-    IQueryBuilder from(String table);
-
-    IQueryBuilder where(Where whereClause);
-
-    IQueryBuilder and(Where whereClause);
-
-    IQueryBuilder or(Where where);
 }

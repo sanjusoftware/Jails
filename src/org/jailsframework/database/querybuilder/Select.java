@@ -14,42 +14,42 @@ public class Select implements ISelectQueryBuilder {
     private String columns;
     private List<Where> whereClauses;
 
-    public IQueryBuilder from(String table) {
+    public ISelectQueryBuilder from(String table) {
         this.table = table;
         return this;
     }
 
-    public IQueryBuilder where(Where whereClause) {
+    public ISelectQueryBuilder where(Where whereClause) {
         whereClauses = new ArrayList<Where>();
         whereClauses.add(whereClause);
         return this;
     }
 
-    public IQueryBuilder and(Where whereClause) {
-        addWhereClause(whereClause, Operator.AND);
+    public ISelectQueryBuilder and(Where where) {
+        addWhereClause(where, Operator.AND);
         return this;
     }
 
-    public IQueryBuilder or(Where whereClause) {
-        addWhereClause(whereClause, Operator.OR);
+    public ISelectQueryBuilder or(Where where) {
+        addWhereClause(where, Operator.OR);
         return this;
-    }
-
-    private void addWhereClause(Where whereClause, final Operator operator) {
-        whereClause.setOperator(operator);
-        if (whereClauses == null) {
-            whereClauses = new ArrayList<Where>();
-        }
-        whereClauses.add(whereClause);
     }
 
     public String build() {
         return "SELECT " + getColumns() + " FROM " + table + getWhereClauses() + ";";
     }
 
-    public IQueryBuilder columns(String comaSeparatedColumns) {
+    public ISelectQueryBuilder columns(String comaSeparatedColumns) {
         this.columns = comaSeparatedColumns;
         return this;
+    }
+
+    private void addWhereClause(Where where, final Operator operator) {
+        where.setOperator(operator);
+        if (whereClauses == null) {
+            whereClauses = new ArrayList<Where>();
+        }
+        whereClauses.add(where);
     }
 
     private String getColumns() {
