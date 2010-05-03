@@ -1,32 +1,37 @@
-package org.jailsframework.database.querybuilder;
+package org.jailsframework.database;
 
-import org.jailsframework.database.Column;
+import org.jailsframework.database.querybuilder.IQueryBuilder;
 
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
  * @version $Revision: 0.1
- *          Date: May 1, 2010
- *          Time: 9:43:16 PM
+ *          Date: May 3, 2010
+ *          Time: 8:13:53 AM
  */
-public class Create implements IQueryBuilder {
-    private String tableName;
+public class Table implements IQueryBuilder {
+    private String name;
     private Column[] columns;
+    private String command;
 
-    public Create table(String tableName) {
-        this.tableName = tableName;
-        return this;
+    public Table(String name) {
+        this.name = name;
     }
 
-    public IQueryBuilder withColumns(Column... columns) {
+    public Table addColumns(Column... columns) {
         this.columns = columns;
         return this;
     }
 
     public String build() {
-        return "CREATE TABLE " + tableName + " (" + getColumnsDefinition() + ")";
+        return command + " TABLE " + name + " (" + getColumnsDefinition() + ")";
     }
 
-    public String getColumnsDefinition() {
+    public IQueryBuilder create() {
+        this.command = "CREATE";
+        return this;
+    }
+
+    private String getColumnsDefinition() {
         String columnsDefinition = "";
         for (Column column : columns) {
             columnsDefinition += column.toString();

@@ -15,4 +15,9 @@ public class ColumnTest {
     public void toStringShouldGiveTheColumnNameAndTheDataType() {
         assertEquals("name VARCHAR", new Column("name", DataType.VARCHAR).toString());
     }
+
+    @Test
+    public void toStringShouldGiveNameDataTypeAndSize() {
+        assertEquals("name VARCHAR(25)", new Column("name", DataType.VARCHAR, 25).toString());
+    }
 }
