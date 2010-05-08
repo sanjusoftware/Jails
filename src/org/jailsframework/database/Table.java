@@ -1,17 +1,14 @@
 package org.jailsframework.database;
 
-import org.jailsframework.database.querybuilder.IQueryBuilder;
-
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
  * @version $Revision: 0.1
  *          Date: May 3, 2010
  *          Time: 8:13:53 AM
  */
-public class Table implements IQueryBuilder {
+public class Table implements DBObject {
     private String name;
     private Column[] columns;
-    private String command;
 
     public Table(String name) {
         this.name = name;
@@ -22,16 +19,16 @@ public class Table implements IQueryBuilder {
         return this;
     }
 
-    public String build() {
-        return command + " TABLE " + name + " (" + getColumnsDefinition() + ")";
+    public String createQuery() {
+        return "CREATE TABLE " + name + " (" + getColumnsDefinition() + ")";
     }
 
-    public IQueryBuilder create() {
-        this.command = "CREATE";
-        return this;
+    public String renameQuery(String newName) {
+        return "RENAME TABLE " + name + " TO " + newName;
     }
 
     private String getColumnsDefinition() {
+        if (columns == null) return "";
         String columnsDefinition = "";
         for (Column column : columns) {
             columnsDefinition += column.toString();

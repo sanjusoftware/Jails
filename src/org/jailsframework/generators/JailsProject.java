@@ -9,6 +9,7 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
@@ -195,8 +196,17 @@ public class JailsProject {
         }
     }
 
-
-    public void setCurrentDbVersion(Long dbVersion) {
-        //To change body of created methods use File | Settings | File Templates.
+    public String migrate() {
+        Long currentDbVersion = getCurrentDbVersion();
+        List<IMigration> migrations = getMigrations();
+        Collections.sort(migrations);
+        for (IMigration migration : migrations) {
+            Long version = migration.getVersion();
+            if (currentDbVersion < version) {
+                migration.up();
+                currentDbVersion = version;
+            }
+        }
+        return currentDbVersion + "";
     }
 }

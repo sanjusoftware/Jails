@@ -23,10 +23,12 @@ public class FileUtil {
         return dir.delete();
     }
 
-    public static boolean makeDirectory(String dir) {
-        boolean dirCreated = new File(dir).mkdir();
+    public static boolean makeDirectory(String dirPath) {
+        File dir = new File(dirPath);
+        if (dir.exists()) return true;
+        boolean dirCreated = dir.mkdir();
         if (!dirCreated) {
-            System.out.println("Error creating dir = " + dir);
+            System.out.println("Error creating dir = " + dirPath);
         }
         return dirCreated;
     }

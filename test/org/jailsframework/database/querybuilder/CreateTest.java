@@ -1,5 +1,8 @@
-package org.jailsframework.database;
+package org.jailsframework.database.querybuilder;
 
+import org.jailsframework.database.Column;
+import org.jailsframework.database.DataType;
+import org.jailsframework.database.Table;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
@@ -10,21 +13,21 @@ import static junit.framework.Assert.assertEquals;
  *          Date: May 1, 2010
  *          Time: 9:30:49 PM
  */
-public class TableTest {
+public class CreateTest {
 
     @Test
-    public void shouldCreateNewTableGivenNameAndColumns() {
+    public void shouldBuildTheCreateQueryNewTableGivenNameAndColumns() {
         assertEquals("CREATE TABLE employee (name VARCHAR, age INT)",
-                new Table("employee").
+                new Create(new Table("employee").
                         addColumns(new Column("name", DataType.VARCHAR),
-                                new Column("age", DataType.INT)).createQuery());
+                        new Column("age", DataType.INT))).build());
     }
 
     @Test
     public void shouldCreateNewTableGivenTableNameAndColumnsWithSize() {
         assertEquals("CREATE TABLE employee (name VARCHAR(255), age INT)",
-                new Table("employee").
+                new Create(new Table("employee").
                         addColumns(new Column("name", DataType.VARCHAR, 255),
-                                new Column("age", DataType.INT)).createQuery());
+                        new Column("age", DataType.INT))).build());
     }
 }
