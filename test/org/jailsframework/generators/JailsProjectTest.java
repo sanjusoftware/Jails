@@ -8,7 +8,6 @@ import org.jailsframework.exceptions.InvalidPathException;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,11 +24,12 @@ public class JailsProjectTest extends JailsProjectTestBase {
     public void setUp() {
         project = new JailsProject("test", "jailsproject") {
             @Override
-            public List<IMigration> getMigrations() {
+            protected List<IMigration> getMigrations() {
                 ArrayList<IMigration> migrations = new ArrayList<IMigration>();
+                migrations.add(getTestMigration(1232L));
                 migrations.add(getTestMigration(1234L));
-                migrations.add(getTestMigration(1235L));
                 migrations.add(getTestMigration(1236L));
+                migrations.add(getTestMigration(1235L));
                 migrations.add(getTestMigration(1237L));
                 return migrations;
             }
@@ -38,12 +38,7 @@ public class JailsProjectTest extends JailsProjectTestBase {
 
     @Test
     public void shouldGenerateAnMVCJavaProjectForValidProjectPath() {
-        boolean b = project.create();
-        Assert.assertTrue(b);
-        Assert.assertTrue("The versions.properties file is not generated",
-                new File(project.getDbPath().concat("\\versions.properties")).exists());
-        Assert.assertTrue("The database.properties file is not generated",
-                new File(project.getConfigPath().concat("\\database.properties")).exists());
+        Assert.assertTrue(project.create());
     }
 
     @Test(expected = InvalidPathException.class)
@@ -52,10 +47,22 @@ public class JailsProjectTest extends JailsProjectTestBase {
     }
 
     @Test
-    public void shouldPickUpTheNextMigrationFileToRunGivenDBVersionToMigrateTo() {
+    public void shouldMigrateUpDBToTheLatestMigrationWhenMigrated() {
         project.create();
-        String currentDbVersion = project.migrate();
-        Assert.assertEquals("1237", currentDbVersion);
+        Assert.assertEquals("1237", project.migrate());
+    }
+
+    @Test
+    public void shouldMigrateTheDBToGivenMigrationWhenMigrated() {
+        project.create();
+        Assert.assertEquals("1236", project.migrate(1236L));
+    }
+
+    @Test
+    public void shouldMigrateDownTheDBToGivenMigrationWhenMigrated() {
+        project.create();
+        Assert.assertEquals("1237", project.migrate());
+        Assert.assertEquals("1232", project.migrate(1232L));
     }
 
     private Migration getTestMigration(final Long version) {

@@ -2,18 +2,16 @@ package org.jailsframework.generators;
 
 import org.jailsframework.database.IMigration;
 import org.jailsframework.exceptions.InvalidPathException;
-import org.jailsframework.util.FileUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
-import static org.jailsframework.util.FileUtil.makeDirectory;
+import static org.jailsframework.util.FileUtil.*;
 
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
@@ -36,6 +34,7 @@ public class JailsProject {
     private File dbPropertiesFile;
     private File migrationsPropertiesFile;
     private String environment;
+    private Long currentDbVersion;
 
     public JailsProject(String path, String projectName) {
         this(path, projectName, "development");
@@ -74,9 +73,91 @@ public class JailsProject {
                 createMigrationPropertiesFile();
     }
 
+    public File getDbPropertiesFile() {
+        return dbPropertiesFile;
+    }
+
+    public String getMigrationsPath() {
+        return migrationsPath;
+    }
+
+    public String getEnvironment() {
+        return environment;
+    }
+
+    public void destroy() {
+        deleteDirRecursively(new File(root));
+    }
+
+    public String getMigrationPackage() {
+        return name.toLowerCase().concat(".db.migrate");
+    }
+
+    protected List<IMigration> getMigrations() {
+        List<IMigration> migrations = new ArrayList<IMigration>();
+        File[] migrationFiles = new File(migrationsPath).listFiles();
+        for (File migrationFile : migrationFiles) {
+            migrations.add(instantiate(migrationFile.getName()));
+        }
+        return migrations;
+    }
+
+    public String migrate() {
+        return migrate(null);
+    }
+
+    public String migrate(Long toVersion) {
+        loadCurrentDbVersion();
+        List<IMigration> migrations = getMigrations();
+        if (toVersion == null) {
+            toVersion = migrations.get(migrations.size() - 1).getVersion();
+        }
+        if (currentDbVersion < toVersion) {
+            migrateUp(toVersion, migrations);
+        } else {
+            migrateDown(toVersion, migrations);
+        }
+        updateCurrentDbVersion();
+        return currentDbVersion.toString();
+    }
+
+    private void migrateDown(Long toVersion, List<IMigration> migrations) {
+        for (IMigration migration : migrations) {
+            Long version = migration.getVersion();
+            if (currentDbVersion > version && version >= toVersion) {
+                migration.down();
+                currentDbVersion = version;
+            }
+        }
+    }
+
+    private void migrateUp(Long toVersion, List<IMigration> migrations) {
+        for (IMigration migration : migrations) {
+            Long version = migration.getVersion();
+            if (currentDbVersion < version && version <= toVersion) {
+                migration.up();
+                currentDbVersion = version;
+            }
+        }
+    }
+
+    private IMigration instantiate(String fileName) {
+        try {
+            String className = name.toLowerCase().concat(".db.migrate.").concat(fileName.substring(0, fileName.lastIndexOf('.')));
+            return (IMigration) Class.forName(className).newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     private boolean createMigrationPropertiesFile() {
         try {
-            migrationsPropertiesFile.createNewFile();
+            createFile(migrationsPropertiesFile);
             FileWriter fileWriter = new FileWriter(migrationsPropertiesFile);
             fileWriter.write("# This file is auto generated. Instead of editing this file, please use the\n" +
                     "# migrations feature of Jails to incrementally modify your database, and\n" +
@@ -95,7 +176,7 @@ public class JailsProject {
 
     private boolean createDatabasePropertiesFile() {
         try {
-            dbPropertiesFile.createNewFile();
+            createFile(dbPropertiesFile);
             FileWriter fileWriter = new FileWriter(dbPropertiesFile);
             fileWriter.write("development.adapter=mysql\n" +
                     "development.database=jails_development\n" +
@@ -110,103 +191,25 @@ public class JailsProject {
         }
     }
 
-    public File getDbPropertiesFile() {
-        return dbPropertiesFile;
-    }
-
-    public String getRoot() {
-        return root;
-    }
-
-    public String getMigrationsPath() {
-        return migrationsPath;
-    }
-
-    public String getDbPath() {
-        return dbPath;
-    }
-
-    public String getConfigPath() {
-        return configPath;
-    }
-
-    public String getAppPath() {
-        return appPath;
-    }
-
-    public String getModelsPath() {
-        return modelsPath;
-    }
-
-    public String getControllersPath() {
-        return controllersPath;
-    }
-
-    public String getViewsPath() {
-        return viewsPath;
-    }
-
-    public String getHelpersPath() {
-        return helpersPath;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEnvironment() {
-        return environment;
-    }
-
-    public void destroy() {
-        FileUtil.deleteDirRecursively(new File(root));
-    }
-
-    public List<IMigration> getMigrations() {
-        List<IMigration> migrations = new ArrayList<IMigration>();
-        File[] migrationFiles = new File(migrationsPath).listFiles();
-        for (File migrationFile : migrationFiles) {
-            migrations.add(instantiate(migrationFile.getName()));
-        }
-        return migrations;
-    }
-
-    private IMigration instantiate(String fileName) {
-        try {
-            String className = name.toLowerCase().concat(".db.migrate.").concat(fileName.substring(0, fileName.lastIndexOf('.')));
-            return (IMigration) Class.forName(className).newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public Long getCurrentDbVersion() {
+    private void updateCurrentDbVersion() {
         try {
             Properties properties = new Properties();
             properties.load(new FileInputStream(migrationsPropertiesFile));
-            return new Long(properties.getProperty(environment));
+            properties.setProperty(environment, currentDbVersion.toString());
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
         }
     }
 
-    public String migrate() {
-        Long currentDbVersion = getCurrentDbVersion();
-        List<IMigration> migrations = getMigrations();
-        Collections.sort(migrations);
-        for (IMigration migration : migrations) {
-            Long version = migration.getVersion();
-            if (currentDbVersion < version) {
-                migration.up();
-                currentDbVersion = version;
+    private void loadCurrentDbVersion() {
+        try {
+            if (currentDbVersion == null) {
+                Properties properties = new Properties();
+                properties.load(new FileInputStream(migrationsPropertiesFile));
+                currentDbVersion = new Long(properties.getProperty(environment));
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return currentDbVersion + "";
     }
 }

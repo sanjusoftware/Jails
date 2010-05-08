@@ -18,6 +18,7 @@ import static org.jailsframework.util.FileUtil.createFile;
  */
 public class MigrationGenerator {
     private JailsProject project;
+    private static final String MIGRATION_TEMPLATE = "\\src\\org\\jailsframework\\generators\\templates\\migration.vm";
 
     public MigrationGenerator(JailsProject project) {
         this.project = project;
@@ -41,20 +42,16 @@ public class MigrationGenerator {
     private void writeMigrationContent(File migrationFile, String migrationFileNameWithTimeStamp, long version) throws Exception {
         VelocityEngine velocityEngine = new VelocityEngine();
         velocityEngine.init();
-        Template template = velocityEngine.getTemplate("\\src\\org\\jailsframework\\generators\\templates\\migration.vm");
+        Template template = velocityEngine.getTemplate(MIGRATION_TEMPLATE);
         VelocityContext context = new VelocityContext();
         context.put("migrationFileName", migrationFileNameWithTimeStamp);
-        context.put("package", getMigrationPackage());
+        context.put("package", project.getMigrationPackage());
         context.put("version", version + "L");
         FileWriter fileWriter = new FileWriter(migrationFile);
         template.merge(context, fileWriter);
         fileWriter.flush();
         fileWriter.close();
 
-    }
-
-    private String getMigrationPackage() {
-        return project.getName().toLowerCase().concat(".db.migrate");
     }
 
     private String getMigrationFileNameWithVersion(long version, String migrationFileName) {
