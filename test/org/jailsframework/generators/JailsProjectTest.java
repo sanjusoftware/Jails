@@ -63,6 +63,7 @@ public class JailsProjectTest extends JailsProjectTestBase {
         project.create();
         Assert.assertEquals("1237", project.migrate());
         Assert.assertEquals("1232", project.migrate(1232L));
+        Assert.assertEquals("1236", project.migrate(1236L));
     }
 
     private Migration getTestMigration(final Long version) {
