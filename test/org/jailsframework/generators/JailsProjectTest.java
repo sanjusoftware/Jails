@@ -34,11 +34,17 @@ public class JailsProjectTest extends JailsProjectTestBase {
                 return migrations;
             }
         };
+        project.create();
     }
 
     @Test
     public void shouldGenerateAnMVCJavaProjectForValidProjectPath() {
         Assert.assertTrue(project.create());
+    }
+
+    @Test
+    public void shouldGenerateAModelGivenAValidName() {
+        Assert.assertTrue("Should have created model \"employee\"", project.addModel("employee"));
     }
 
     @Test(expected = InvalidPathException.class)

@@ -35,6 +35,7 @@ public class FileUtil {
 
     public static boolean createFile(File file) {
         try {
+            if (file.exists()) file.delete();
             return file.createNewFile();
         } catch (IOException e) {
             System.out.println("Error creating the file = " + file.getAbsolutePath());

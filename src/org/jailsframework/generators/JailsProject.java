@@ -2,6 +2,7 @@ package org.jailsframework.generators;
 
 import org.jailsframework.database.IMigration;
 import org.jailsframework.exceptions.InvalidPathException;
+import org.jailsframework.util.StringUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -211,5 +212,9 @@ public class JailsProject {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean addModel(String modelName) {
+        return createFile(new File(modelsPath + "\\" + new StringUtil(modelName).camelize() + ".java"));
     }
 }
