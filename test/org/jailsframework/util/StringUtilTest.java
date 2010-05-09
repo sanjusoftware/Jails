@@ -18,4 +18,10 @@ public class StringUtilTest {
         Assert.assertEquals("Eemployee", new StringUtil("eemployee").camelize());
         Assert.assertEquals("Employee", new StringUtil("Employee").camelize());
     }
+
+    @Test
+    public void shouldTabelizeGivenString() {
+        Assert.assertEquals("employees", new StringUtil("Employee").tabelize());
+        Assert.assertEquals("employee_records", new StringUtil("EmployeeRecord").tabelize());
+    }
 }

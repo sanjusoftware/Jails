@@ -21,6 +21,6 @@ public class JailsProjectTestBase {
 
     @After
     public void tearDown() {
-        project.destroy();
+//        project.destroy();
     }
 }
