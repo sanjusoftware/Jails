@@ -23,5 +23,6 @@ public class StringUtilTest {
     public void shouldTabelizeGivenString() {
         Assert.assertEquals("employees", new StringUtil("Employee").tabelize());
         Assert.assertEquals("employee_records", new StringUtil("EmployeeRecord").tabelize());
+        Assert.assertEquals("employee_record_founds", new StringUtil("EmployeeRecordFound").tabelize());
     }
 }

@@ -1,5 +1,8 @@
 package org.jailsframework.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
  * @version $Revision: 0.1
@@ -27,8 +30,8 @@ public class StringUtil {
             } else {
                 tabelizedValue.append(word.toLowerCase());
             }
-            index++;
             tabelizedValue.append("_");
+            index++;
         }
         String table_name = tabelizedValue.toString();
         return table_name.substring(0, table_name.lastIndexOf('_'));
@@ -39,6 +42,29 @@ public class StringUtil {
     }
 
     private String[] breakByCamelCases() {
-        return new String[]{"Employee", "Record"};
+        List<String> words = new ArrayList<String>();
+        char[] chars = value.toCharArray();
+        int wordStartIndex = 0;
+        int wordEndIndex = 0;
+        char prevCapChar = chars[0];
+        for (char aChar : chars) {
+            int ascciValue = (int) aChar;
+            if (isCaps(ascciValue) && aChar != prevCapChar) {
+                words.add(getWord(wordStartIndex, wordEndIndex));
+                wordStartIndex = wordEndIndex;
+                prevCapChar = aChar;
+            }
+            wordEndIndex++;
+        }
+        words.add(getWord(wordStartIndex, wordEndIndex));
+        return words.toArray(new String[words.size()]);
+    }
+
+    private String getWord(int wordStartIndex, int wordEndIndex) {
+        return value.substring(wordStartIndex, wordEndIndex);
+    }
+
+    private boolean isCaps(int ascciValue) {
+        return ascciValue >= 65 && ascciValue <= 90;
     }
 }
