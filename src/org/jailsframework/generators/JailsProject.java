@@ -4,10 +4,7 @@ import org.jailsframework.database.IMigration;
 import org.jailsframework.exceptions.InvalidPathException;
 import org.jailsframework.util.StringUtil;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -197,6 +194,7 @@ public class JailsProject {
             Properties properties = new Properties();
             properties.load(new FileInputStream(migrationsPropertiesFile));
             properties.setProperty(environment, currentDbVersion.toString());
+            properties.store(new FileOutputStream(migrationsPropertiesFile), null);
         } catch (IOException e) {
             e.printStackTrace();
         }
