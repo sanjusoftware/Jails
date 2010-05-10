@@ -11,24 +11,24 @@ import org.junit.Test;
  *          Time: 1:22:28 PM
  */
 public class JailsRecordTest {
-    private JailsRecord model;
+    private Record testRecord;
 
     @Before
     public void setUp() {
-        model = new TestJailsRecord();
+        testRecord = new TestRecord();
     }
 
     @Test
     public void shouldCreateNewRecordOfTheGivenModel() {
-        Assert.assertTrue(model.create());
+        Assert.assertTrue(testRecord.create());
     }
 
     @Test
     public void shouldGiveTableNameGivenModel() {
-        Assert.assertEquals("test_jails_records", model.getTable());
+        Assert.assertEquals("test_jails_records", testRecord.getTable());
     }
 
-    private class TestJailsRecord extends JailsRecord {
+    private class TestRecord extends Record {
 
     }
 }
