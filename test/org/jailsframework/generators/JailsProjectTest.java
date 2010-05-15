@@ -4,7 +4,7 @@ import junit.framework.Assert;
 import org.jailsframework.JailsProjectTestBase;
 import org.jailsframework.database.IMigration;
 import org.jailsframework.database.Migration;
-import org.jailsframework.exceptions.InvalidPathException;
+import org.jailsframework.exceptions.JailsException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -47,7 +47,7 @@ public class JailsProjectTest extends JailsProjectTestBase {
         Assert.assertTrue("Should have created model \"employee\"", project.addModel("employee"));
     }
 
-    @Test(expected = InvalidPathException.class)
+    @Test(expected = JailsException.class)
     public void shouldRaiseInvalidPathExceptionForWrongProjectPath() {
         new JailsProject("InvalidPath", "").create();
     }

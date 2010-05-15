@@ -1,7 +1,7 @@
 package org.jailsframework.loaders;
 
-import org.jailsframework.database.Database;
 import org.jailsframework.database.DatabaseFactory;
+import org.jailsframework.database.IDatabase;
 import org.jailsframework.generators.JailsProject;
 
 import java.io.FileInputStream;
@@ -18,7 +18,7 @@ import java.util.Properties;
 public class DatabaseConfiguration {
     private static Properties prop;
     private static DatabaseConfiguration dbConfig;
-    private Database database;
+    private IDatabase database;
     private JailsProject project;
 
     public static DatabaseConfiguration getInstance(JailsProject project) {
@@ -41,7 +41,7 @@ public class DatabaseConfiguration {
         }
     }
 
-    public Database getDatabase() {
+    public IDatabase getDatabase() {
         if (database == null) {
             database = new DatabaseFactory(
                     getAdapterName()).getDatabase(

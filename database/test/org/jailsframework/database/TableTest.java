@@ -1,8 +1,7 @@
 package org.jailsframework.database;
 
+import junit.framework.Assert;
 import org.junit.Test;
-
-import static junit.framework.Assert.assertEquals;
 
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
@@ -14,7 +13,7 @@ public class TableTest {
 
     @Test
     public void shouldCreateNewTableGivenNameAndColumns() {
-        assertEquals("CREATE TABLE employee (name VARCHAR, age INT)",
+        Assert.assertEquals("CREATE TABLE employee (name VARCHAR, age INT)",
                 new Table("employee").
                         addColumns(new Column("name", DataType.VARCHAR),
                                 new Column("age", DataType.INT)).createQuery());
@@ -22,7 +21,7 @@ public class TableTest {
 
     @Test
     public void shouldCreateNewTableGivenTableNameAndColumnsWithSize() {
-        assertEquals("CREATE TABLE employee (name VARCHAR(255), age INT)",
+        Assert.assertEquals("CREATE TABLE employee (name VARCHAR(255), age INT)",
                 new Table("employee").
                         addColumns(new Column("name", DataType.VARCHAR, 255),
                                 new Column("age", DataType.INT)).createQuery());

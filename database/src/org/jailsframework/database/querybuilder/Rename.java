@@ -6,16 +6,22 @@ import org.jailsframework.database.DBObject;
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
  * @version $Revision: 0.1
  *          Date: May 8, 2010
- *          Time: 9:54:14 PM
+ *          Time: 11:16:29 PM
  */
-public class Create implements IQueryBuilder {
+public class Rename extends AbstractQueryBuilder {
     private DBObject dbObj;
+    private String newName;
 
-    public Create(DBObject dbObj) {
+    public Rename(DBObject dbObj) {
         this.dbObj = dbObj;
     }
 
     public String build() {
-        return dbObj.createQuery();
+        return dbObj.renameQuery(newName);
+    }
+
+    public IQueryBuilder to(String newName) {
+        this.newName = newName;
+        return this;
     }
 }

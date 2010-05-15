@@ -1,7 +1,7 @@
 package org.jailsframework.generators;
 
 import org.jailsframework.database.IMigration;
-import org.jailsframework.exceptions.InvalidPathException;
+import org.jailsframework.exceptions.JailsException;
 import org.jailsframework.util.StringUtil;
 
 import java.io.*;
@@ -40,7 +40,7 @@ public class JailsProject {
 
     public JailsProject(String path, String projectName, String env) {
         if (!new File(path).exists()) {
-            throw new InvalidPathException("The project path : " + path + " is does not exists");
+            throw new JailsException("The project path : " + path + " is does not exists");
         }
         this.environment = env;
         name = projectName;

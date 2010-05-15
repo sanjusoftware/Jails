@@ -6,7 +6,8 @@ package org.jailsframework.database.querybuilder;
  *          Date: May 9, 2010
  *          Time: 11:13:52 AM
  */
-public class Insert implements IQueryBuilder {
+public class Insert extends AbstractQueryBuilder {
+
     public IQueryBuilder into(String table) {
         return null;
     }

@@ -10,7 +10,7 @@ import org.junit.Test;
  *          Date: May 9, 2010
  *          Time: 1:22:28 PM
  */
-public class JailsRecordTest {
+public class RecordTest {
     private Record testRecord;
 
     @Before
@@ -21,11 +21,6 @@ public class JailsRecordTest {
     @Test
     public void shouldCreateNewRecordOfTheGivenModel() {
         Assert.assertTrue(testRecord.create());
-    }
-
-    @Test
-    public void shouldGiveTableNameGivenModel() {
-        Assert.assertEquals("test_jails_records", testRecord.getTable());
     }
 
     private class TestRecord extends Record {

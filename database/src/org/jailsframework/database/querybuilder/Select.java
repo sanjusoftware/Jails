@@ -9,7 +9,7 @@ import java.util.List;
  *          Date: Apr 28, 2010
  *          Time: 12:11:58 PM
  */
-public class Select implements ISelectQueryBuilder {
+public class Select extends AbstractQueryBuilder implements ISelectQueryBuilder {
     private String table;
     private String columns;
     private List<Where> whereClauses;

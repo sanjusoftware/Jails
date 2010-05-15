@@ -6,8 +6,8 @@ package org.jailsframework.exceptions;
  *          Date: Apr 3, 2010
  *          Time: 6:30:51 PM
  */
-public class UnsupportedDatabaseException extends RuntimeException {
-    public UnsupportedDatabaseException(String message) {
+public class JailsException extends RuntimeException {
+    public JailsException(String message) {
         super(message);
     }
 }

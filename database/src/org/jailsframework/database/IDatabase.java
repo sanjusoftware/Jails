@@ -6,7 +6,7 @@ package org.jailsframework.database;
  *          Date: Apr 3, 2010
  *          Time: 9:50:57 AM
  */
-public interface Database {
+public interface IDatabase {
     String getAdapter();
 
     String getDatabase();
@@ -14,4 +14,6 @@ public interface Database {
     String getUsername();
 
     String getPassword();
+
+    void execute(String query);
 }

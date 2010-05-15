@@ -12,12 +12,8 @@ import org.jailsframework.util.StringUtil;
 public abstract class Record implements IRecord {
 
     public boolean create() {
-        new Insert().into(getTable());
+        new Insert().into(getTable()).execute();
         return false;
-    }
-
-    protected String getTable() {
-        return new StringUtil(this.getClass().getSimpleName()).tabelize();
     }
 
     public boolean update() {
@@ -26,5 +22,9 @@ public abstract class Record implements IRecord {
 
     public boolean delete() {
         return false;
+    }
+
+    private String getTable() {
+        return new StringUtil(this.getClass().getSimpleName()).tabelize();
     }
 }

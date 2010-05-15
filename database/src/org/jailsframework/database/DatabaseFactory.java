@@ -1,6 +1,6 @@
 package org.jailsframework.database;
 
-import org.jailsframework.exceptions.UnsupportedDatabaseException;
+import org.jailsframework.exceptions.JailsException;
 
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
@@ -15,11 +15,11 @@ public class DatabaseFactory {
         this.adapter = adapterName;
     }
 
-    public Database getDatabase(String databaseName, String userName, String password) {
+    public IDatabase getDatabase(String databaseName, String userName, String password) {
         if ("mysql".equals(adapter)) {
             return new MysqlDatabase(databaseName, userName, password);
         } else {
-            throw new UnsupportedDatabaseException("The \"" + adapter + "\" database is not yet supported !!");
+            throw new JailsException("The \"" + adapter + "\" database is not yet supported !!");
         }
     }
 }

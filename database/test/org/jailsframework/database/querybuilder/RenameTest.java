@@ -1,9 +1,8 @@
 package org.jailsframework.database.querybuilder;
 
+import junit.framework.Assert;
 import org.jailsframework.database.Table;
 import org.junit.Test;
-
-import static junit.framework.Assert.assertEquals;
 
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
@@ -14,7 +13,7 @@ import static junit.framework.Assert.assertEquals;
 public class RenameTest {
     @Test
     public void shouldRenameATableGivenTheNewName() {
-        assertEquals("RENAME TABLE tbl_name TO new_tbl_name",
+        Assert.assertEquals("RENAME TABLE tbl_name TO new_tbl_name",
                 new Rename(new Table("tbl_name")).to("new_tbl_name").build());
     }
 }

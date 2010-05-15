@@ -1,8 +1,7 @@
 package org.jailsframework.database;
 
+import junit.framework.Assert;
 import org.junit.Test;
-
-import static junit.framework.Assert.assertEquals;
 
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
@@ -13,11 +12,11 @@ import static junit.framework.Assert.assertEquals;
 public class ColumnTest {
     @Test
     public void toStringShouldGiveTheColumnNameAndTheDataType() {
-        assertEquals("name VARCHAR", new Column("name", DataType.VARCHAR).toString());
+        Assert.assertEquals("name VARCHAR", new Column("name", DataType.VARCHAR).toString());
     }
 
     @Test
     public void toStringShouldGiveNameDataTypeAndSize() {
-        assertEquals("name VARCHAR(25)", new Column("name", DataType.VARCHAR, 25).toString());
+        Assert.assertEquals("name VARCHAR(25)", new Column("name", DataType.VARCHAR, 25).toString());
     }
 }

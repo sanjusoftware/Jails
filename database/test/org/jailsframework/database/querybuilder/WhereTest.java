@@ -1,8 +1,7 @@
 package org.jailsframework.database.querybuilder;
 
+import junit.framework.Assert;
 import org.junit.Test;
-
-import static junit.framework.Assert.assertEquals;
 
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
@@ -13,18 +12,18 @@ import static junit.framework.Assert.assertEquals;
 public class WhereTest {
     @Test
     public void shouldGiveProperValueWithQuotesIfRequired() {
-        assertEquals(" name = 'Sanjeev'", new Where("name", "Sanjeev").toString());
-        assertEquals(" name = 'Sanjeev'", new Where("name", "Sanjeev", String.class).toString());
-        assertEquals(" id = 10", new Where("id", "10", Integer.class).toString());
+        Assert.assertEquals(" name = 'Sanjeev'", new Where("name", "Sanjeev").toString());
+        Assert.assertEquals(" name = 'Sanjeev'", new Where("name", "Sanjeev", String.class).toString());
+        Assert.assertEquals(" id = 10", new Where("id", "10", Integer.class).toString());
     }
 
     @Test
     public void shouldApplyParenthesisIfHasInternalWhereClause() {
         Where where = new Where("id", "10", Integer.class);
         where.and(new Where("name", "Sanjeev"));
-        assertEquals(" (id = 10 AND name = 'Sanjeev')", where.toString());
+        Assert.assertEquals(" (id = 10 AND name = 'Sanjeev')", where.toString());
         where.or(new Where("sal", "10", Integer.class));
-        assertEquals(" (id = 10 AND name = 'Sanjeev' OR sal = 10)", where.toString());
+        Assert.assertEquals(" (id = 10 AND name = 'Sanjeev' OR sal = 10)", where.toString());
     }
 
     @Test
@@ -32,8 +31,8 @@ public class WhereTest {
         Where outerWhere = new Where("id", "10", Integer.class);
         Where innerWhere = new Where("name", "Sanjeev");
         outerWhere.and(innerWhere);
-        assertEquals(" (id = 10 AND name = 'Sanjeev')", outerWhere.toString());
+        Assert.assertEquals(" (id = 10 AND name = 'Sanjeev')", outerWhere.toString());
         innerWhere.or(new Where("sal", "10", Integer.class));
-        assertEquals(" (id = 10 AND (name = 'Sanjeev' OR sal = 10))", outerWhere.toString());
+        Assert.assertEquals(" (id = 10 AND (name = 'Sanjeev' OR sal = 10))", outerWhere.toString());
     }
 }
