@@ -15,7 +15,7 @@ import org.junit.Test;
 public class CreateTest {
 
     @Test
-    public void shouldTestBuildTheCreateQueryNewTableGivenNameAndColumns() {
+    public void shouldBuildTheCreateQueryNewTableGivenNameAndColumns() {
         Assert.assertEquals("CREATE TABLE employee (name VARCHAR, age INT)",
                 new Create(new Table("employee").
                         addColumns(new Column("name", DataType.VARCHAR),
