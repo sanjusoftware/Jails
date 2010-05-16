@@ -57,19 +57,16 @@ public class JailsProjectTest extends JailsProjectTestBase {
 
     @Test
     public void shouldMigrateUpDBToTheLatestMigrationWhenMigrated() {
-        project.create();
         Assert.assertEquals("1237", project.migrate());
     }
 
     @Test
     public void shouldMigrateTheDBToGivenMigrationWhenMigrated() {
-        project.create();
         Assert.assertEquals("1236", project.migrate(1236L));
     }
 
     @Test
     public void shouldMigrateDownTheDBToGivenMigrationWhenMigrated() {
-        project.create();
         Assert.assertEquals("1237", project.migrate());
         Assert.assertEquals("1232", project.migrate(1232L));
         Assert.assertEquals("1236", project.migrate(1236L));
