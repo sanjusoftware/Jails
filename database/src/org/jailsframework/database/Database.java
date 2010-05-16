@@ -14,9 +14,9 @@ import java.util.List;
  *          Time: 12:10:35 AM
  */
 public abstract class Database implements IDatabase {
-    protected String name;
-    protected String user;
-    protected String password;
+    private String name;
+    private String user;
+    private String password;
     private String driver;
 
     public Database(String driver, String name, String user, String password) {
@@ -24,18 +24,6 @@ public abstract class Database implements IDatabase {
         this.user = user;
         this.name = name;
         this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getUser() {
-        return user;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public boolean execute(String query) {

@@ -9,13 +9,6 @@ import java.util.List;
  *          Time: 9:50:57 AM
  */
 public interface IDatabase {
-
-    String getName();
-
-    String getUser();
-
-    String getPassword();
-
     boolean execute(String query);
 
     List<Record> executeQuery(String query);
