@@ -9,7 +9,6 @@ import java.util.List;
  *          Time: 9:50:57 AM
  */
 public interface IDatabase {
-    String getAdapter();
 
     String getName();
 

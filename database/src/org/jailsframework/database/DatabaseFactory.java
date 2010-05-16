@@ -15,9 +15,9 @@ public class DatabaseFactory {
         this.adapter = adapterName;
     }
 
-    public IDatabase getDatabase(String databaseName, String userName, String password) {
+    public IDatabase getDatabase(String driver, String databaseName, String userName, String password) {
         if ("mysql".equals(adapter)) {
-            return new MysqlDatabase(databaseName, userName, password);
+            return new MysqlDatabase(driver, databaseName, userName, password);
         } else {
             throw new JailsException("The \"" + adapter + "\" name is not yet supported !!");
         }

@@ -55,7 +55,7 @@ public class JailsProject {
         controllersPath = appPath + "\\controllers";
         viewsPath = appPath + "\\views";
         helpersPath = appPath + "\\helpers";
-        dbPropertiesFile = new File(configPath, "name.properties");
+        dbPropertiesFile = new File(configPath, "database.properties");
         migrationsPropertiesFile = new File(dbPath, "versions.properties");
     }
 
@@ -162,7 +162,7 @@ public class JailsProject {
             createFile(migrationsPropertiesFile);
             FileWriter fileWriter = new FileWriter(migrationsPropertiesFile);
             fileWriter.write("# This file is auto generated. Instead of editing this file, please use the\n" +
-                    "# migrations feature of Jails to incrementally modify your name, and\n" +
+                    "# migrations feature of Jails to incrementally modify your database, and\n" +
                     "# then regenerate this version file.\n" +
                     "development=0\n" +
                     "test=0\n" +
@@ -180,10 +180,12 @@ public class JailsProject {
         try {
             createFile(dbPropertiesFile);
             FileWriter fileWriter = new FileWriter(dbPropertiesFile);
-            fileWriter.write("development.adapter=mysql\n" +
-                    "development.name=jails_development\n" +
-                    "development.user=root\n" +
-                    "development.password=password");
+            fileWriter.write(
+                    "development.adapter=mysql\n" +
+                            "development.driver=com.mysql.jdbc.Driver\n" +
+                            "development.name=jails_development\n" +
+                            "development.user=root\n" +
+                            "development.password=password");
             fileWriter.flush();
             fileWriter.close();
             return true;

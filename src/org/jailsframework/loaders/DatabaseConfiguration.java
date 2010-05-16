@@ -44,27 +44,16 @@ public class DatabaseConfiguration {
     public IDatabase getDatabase() {
         if (database == null) {
             database = new DatabaseFactory(
-                    getAdapterName()).getDatabase(
-                    getDatabaseName(),
-                    getUserName(),
-                    getPassword());
+                    getProperty("adapter")).getDatabase(
+                    getProperty("driver"),
+                    getProperty("name"),
+                    getProperty("user"),
+                    getProperty("password"));
         }
         return database;
     }
 
-    private String getPassword() {
-        return prop.getProperty(project.getEnvironment().concat(".password"));
-    }
-
-    private String getUserName() {
-        return prop.getProperty(project.getEnvironment().concat(".user"));
-    }
-
-    private String getDatabaseName() {
-        return prop.getProperty(project.getEnvironment().concat(".name"));
-    }
-
-    private String getAdapterName() {
-        return prop.getProperty(project.getEnvironment().concat(".adapter"));
+    private String getProperty(String property) {
+        return prop.getProperty(project.getEnvironment().concat("." + property));
     }
 }

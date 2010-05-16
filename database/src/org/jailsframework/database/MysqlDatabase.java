@@ -7,13 +7,7 @@ package org.jailsframework.database;
  *          Time: 9:34:18 PM
  */
 public class MysqlDatabase extends Database {
-
-    public MysqlDatabase(String database, String username, String password) {
-        super(username, database, password);
+    public MysqlDatabase(String driver, String database, String username, String password) {
+        super(driver, database, username, password);
     }
-
-    public String getAdapter() {
-        return "mysql";
-    }
-
 }

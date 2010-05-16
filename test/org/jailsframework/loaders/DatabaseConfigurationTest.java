@@ -15,7 +15,6 @@ public class DatabaseConfigurationTest extends JailsProjectTestBase {
     @Test
     public void shouldReadTheDatabasePropertiesFileAndLoadTheDatabaseConfiguration() {
         IDatabase database = DatabaseConfiguration.getInstance(project).getDatabase();
-        Assert.assertEquals("mysql", database.getAdapter());
         Assert.assertEquals("root", database.getUser());
         Assert.assertEquals("password", database.getPassword());
         Assert.assertEquals("jails_development", database.getName());

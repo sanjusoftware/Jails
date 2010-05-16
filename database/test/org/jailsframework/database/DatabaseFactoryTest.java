@@ -14,12 +14,12 @@ public class DatabaseFactoryTest {
 
     @Test(expected = JailsException.class)
     public void shouldThroughUnsupportedDatabaseExceptionIfAdapterNotSupported() {
-        new DatabaseFactory(this.toString()).getDatabase(null, null, null);
+        new DatabaseFactory(this.toString()).getDatabase(null, null, null, null);
     }
 
     @Test
     public void shouldReturnMySQLDatabaseInstanceIfGivenMYSQLAdapter() {
         Assert.assertTrue(
-                new DatabaseFactory("mysql").getDatabase(null, null, null) instanceof MysqlDatabase);
+                new DatabaseFactory("mysql").getDatabase(null, null, null, null) instanceof MysqlDatabase);
     }
 }
