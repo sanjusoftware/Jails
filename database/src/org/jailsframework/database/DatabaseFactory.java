@@ -19,7 +19,7 @@ public class DatabaseFactory {
         if ("mysql".equals(adapter)) {
             return new MysqlDatabase(databaseName, userName, password);
         } else {
-            throw new JailsException("The \"" + adapter + "\" database is not yet supported !!");
+            throw new JailsException("The \"" + adapter + "\" name is not yet supported !!");
         }
     }
 }

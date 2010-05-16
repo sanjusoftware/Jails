@@ -2,8 +2,10 @@ package org.jailsframework.generators;
 
 import junit.framework.Assert;
 import org.jailsframework.JailsProjectTestBase;
-import org.jailsframework.database.IMigration;
-import org.jailsframework.database.Migration;
+import org.jailsframework.database.IDatabase;
+import org.jailsframework.database.MysqlDatabase;
+import org.jailsframework.database.migration.IMigration;
+import org.jailsframework.database.migration.Migration;
 import org.jailsframework.exceptions.JailsException;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,12 +27,13 @@ public class JailsProjectTest extends JailsProjectTestBase {
         project = new JailsProject("test", "jailsproject") {
             @Override
             protected List<IMigration> getMigrations() {
-                ArrayList<IMigration> migrations = new ArrayList<IMigration>();
-                migrations.add(getTestMigration(1232L));
-                migrations.add(getTestMigration(1234L));
-                migrations.add(getTestMigration(1236L));
-                migrations.add(getTestMigration(1235L));
-                migrations.add(getTestMigration(1237L));
+                IDatabase mysqlDatabase = new MysqlDatabase(null, null, null);
+                List<IMigration> migrations = new ArrayList<IMigration>();
+                migrations.add(getTestMigration(1232L, mysqlDatabase));
+                migrations.add(getTestMigration(1234L, mysqlDatabase));
+                migrations.add(getTestMigration(1236L, mysqlDatabase));
+                migrations.add(getTestMigration(1235L, mysqlDatabase));
+                migrations.add(getTestMigration(1237L, mysqlDatabase));
                 return migrations;
             }
         };
@@ -72,8 +75,12 @@ public class JailsProjectTest extends JailsProjectTestBase {
         Assert.assertEquals("1236", project.migrate(1236L));
     }
 
-    private Migration getTestMigration(final Long version) {
+    private Migration getTestMigration(final Long version, final IDatabase database) {
         return new Migration() {
+
+            {
+                this.setDatabase(database);
+            }
 
             public void up() {
 
@@ -86,6 +93,7 @@ public class JailsProjectTest extends JailsProjectTestBase {
             public Long getVersion() {
                 return version;
             }
+
         };
     }
 }

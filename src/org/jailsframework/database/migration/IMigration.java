@@ -1,4 +1,6 @@
-package org.jailsframework.database;
+package org.jailsframework.database.migration;
+
+import org.jailsframework.database.IDatabase;
 
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
@@ -12,5 +14,13 @@ public interface IMigration extends Comparable {
 
     void down();
 
+    void executeUp();
+
+    void executeDown();
+
     Long getVersion();
+
+    void setDatabase(IDatabase database);
+
+    void addAction(String query);
 }

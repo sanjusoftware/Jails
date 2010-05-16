@@ -1,17 +1,17 @@
 package $package;
 
-import org.jailsframework.database.Migration;
+import org.jailsframework.database.migration.Migration;
 
 public class $migrationFileName extends Migration {
 
     private final Long version = $version;
 
     public void up() {
-
+        addAction("");
     }
 
     public void down() {
-
+        addAction("");
     }
 
     public Long getVersion() {

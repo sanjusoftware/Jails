@@ -1,6 +1,7 @@
 package org.jailsframework.database.querybuilder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
@@ -13,7 +14,7 @@ public class Where {
     private String value;
     private Object type;
     private Operator operator;
-    private ArrayList<Where> whereClauses;
+    private List<Where> whereClauses;
     private String valueOperator;
 
     public Where(String columnName, String value) {

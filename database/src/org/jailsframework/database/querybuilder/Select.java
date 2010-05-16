@@ -1,5 +1,7 @@
 package org.jailsframework.database.querybuilder;
 
+import org.jailsframework.database.Record;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +35,10 @@ public class Select extends AbstractQueryBuilder implements ISelectQueryBuilder 
     public ISelectQueryBuilder or(Where where) {
         addWhereClause(where, Operator.OR);
         return this;
+    }
+
+    public List<Record> executeQuery() {
+        return database.executeQuery(build());
     }
 
     public String build() {

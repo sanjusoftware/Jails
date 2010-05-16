@@ -9,5 +9,5 @@ package org.jailsframework.database.querybuilder;
 public interface IQueryBuilder {
     String build();
 
-    void execute();
+    boolean execute();
 }

@@ -1,5 +1,7 @@
 package org.jailsframework.database;
 
+import java.util.List;
+
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
  * @version $Revision: 0.1
@@ -9,11 +11,13 @@ package org.jailsframework.database;
 public interface IDatabase {
     String getAdapter();
 
-    String getDatabase();
+    String getName();
 
-    String getUsername();
+    String getUser();
 
     String getPassword();
 
-    void execute(String query);
+    boolean execute(String query);
+
+    List<Record> executeQuery(String query);
 }

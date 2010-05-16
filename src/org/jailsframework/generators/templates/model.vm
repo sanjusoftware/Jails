@@ -1,6 +1,6 @@
 package $package;
 
-import org.jailsframework.database.Migration;
+import org.jailsframework.database.migration.Migration;
 
 public class $migrationFileName extends Migration {
 

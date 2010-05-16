@@ -1,6 +1,7 @@
 package org.jailsframework.database.querybuilder;
 
 import org.jailsframework.database.IDatabase;
+import org.jailsframework.exceptions.JailsException;
 
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
@@ -9,11 +10,14 @@ import org.jailsframework.database.IDatabase;
  *          Time: 11:46:21 PM
  */
 public abstract class AbstractQueryBuilder implements IQueryBuilder {
-    private IDatabase database;
+    IDatabase database;
 
     public abstract String build();
 
-    public void execute() {
-        database.execute(build());
+    public boolean execute() {
+        if (database == null) {
+            throw new JailsException("No name specified !!");
+        }
+        return database.execute(build());
     }
 }

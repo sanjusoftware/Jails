@@ -1,6 +1,6 @@
 package org.jailsframework.database.querybuilder;
 
-import org.jailsframework.database.DBObject;
+import org.jailsframework.database.DBComponent;
 
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
@@ -9,10 +9,10 @@ import org.jailsframework.database.DBObject;
  *          Time: 11:16:29 PM
  */
 public class Rename extends AbstractQueryBuilder {
-    private DBObject dbObj;
+    private DBComponent dbObj;
     private String newName;
 
-    public Rename(DBObject dbObj) {
+    public Rename(DBComponent dbObj) {
         this.dbObj = dbObj;
     }
 

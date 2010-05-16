@@ -1,8 +1,11 @@
 package org.jailsframework.database;
 
-import junit.framework.Assert;
+import org.jailsframework.database.querybuilder.Select;
 import org.junit.Before;
 import org.junit.Test;
+
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
 
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
@@ -11,7 +14,7 @@ import org.junit.Test;
  *          Time: 1:22:28 PM
  */
 public class RecordTest {
-    private Record testRecord;
+    private IRecord testRecord;
 
     @Before
     public void setUp() {
@@ -20,7 +23,8 @@ public class RecordTest {
 
     @Test
     public void shouldCreateNewRecordOfTheGivenModel() {
-        Assert.assertTrue(testRecord.create());
+        assertTrue(testRecord.create());
+        assertEquals(1, new Select().from("test_record").executeQuery().size());
     }
 
     private class TestRecord extends Record {

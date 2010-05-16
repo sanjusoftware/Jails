@@ -3,6 +3,8 @@ package org.jailsframework.database;
 import org.jailsframework.database.querybuilder.Insert;
 import org.jailsframework.util.StringUtil;
 
+import java.util.List;
+
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
  * @version $Revision: 0.1
@@ -10,10 +12,10 @@ import org.jailsframework.util.StringUtil;
  *          Time: 11:07:25 AM
  */
 public abstract class Record implements IRecord {
+    private List<Column> columns;
 
     public boolean create() {
-        new Insert().into(getTable()).execute();
-        return false;
+        return new Insert().into(table()).values(columns).execute();
     }
 
     public boolean update() {
@@ -24,7 +26,7 @@ public abstract class Record implements IRecord {
         return false;
     }
 
-    private String getTable() {
+    private String table() {
         return new StringUtil(this.getClass().getSimpleName()).tabelize();
     }
 }

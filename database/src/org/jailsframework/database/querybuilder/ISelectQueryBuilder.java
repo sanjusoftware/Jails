@@ -1,5 +1,9 @@
 package org.jailsframework.database.querybuilder;
 
+import org.jailsframework.database.Record;
+
+import java.util.List;
+
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
  * @version $Revision: 0.1
@@ -16,4 +20,6 @@ public interface ISelectQueryBuilder extends IQueryBuilder {
     ISelectQueryBuilder and(Where where);
 
     ISelectQueryBuilder or(Where where);
+
+    public List<Record> executeQuery();
 }

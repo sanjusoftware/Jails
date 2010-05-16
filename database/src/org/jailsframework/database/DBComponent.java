@@ -6,7 +6,7 @@ package org.jailsframework.database;
  *          Date: May 8, 2010
  *          Time: 9:57:37 PM
  */
-public interface DBObject {
+public interface DBComponent {
     String createQuery();
 
     String renameQuery(String newName);

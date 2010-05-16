@@ -57,11 +57,11 @@ public class DatabaseConfiguration {
     }
 
     private String getUserName() {
-        return prop.getProperty(project.getEnvironment().concat(".username"));
+        return prop.getProperty(project.getEnvironment().concat(".user"));
     }
 
     private String getDatabaseName() {
-        return prop.getProperty(project.getEnvironment().concat(".database"));
+        return prop.getProperty(project.getEnvironment().concat(".name"));
     }
 
     private String getAdapterName() {

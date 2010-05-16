@@ -6,7 +6,7 @@ package org.jailsframework.database;
  *          Date: May 3, 2010
  *          Time: 8:13:53 AM
  */
-public class Table implements DBObject {
+public class Table implements DBComponent {
     private String name;
     private Column[] columns;
 

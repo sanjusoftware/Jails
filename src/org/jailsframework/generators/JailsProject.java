@@ -1,7 +1,9 @@
 package org.jailsframework.generators;
 
-import org.jailsframework.database.IMigration;
+import org.jailsframework.database.IDatabase;
+import org.jailsframework.database.migration.IMigration;
 import org.jailsframework.exceptions.JailsException;
+import org.jailsframework.loaders.DatabaseConfiguration;
 import org.jailsframework.util.StringUtil;
 
 import java.io.*;
@@ -53,7 +55,7 @@ public class JailsProject {
         controllersPath = appPath + "\\controllers";
         viewsPath = appPath + "\\views";
         helpersPath = appPath + "\\helpers";
-        dbPropertiesFile = new File(configPath, "database.properties");
+        dbPropertiesFile = new File(configPath, "name.properties");
         migrationsPropertiesFile = new File(dbPath, "versions.properties");
     }
 
@@ -95,7 +97,9 @@ public class JailsProject {
         List<IMigration> migrations = new ArrayList<IMigration>();
         File[] migrationFiles = new File(migrationsPath).listFiles();
         for (File migrationFile : migrationFiles) {
-            migrations.add(instantiate(migrationFile.getName()));
+            IMigration migration = instantiate(migrationFile.getName());
+            migration.setDatabase(getDatabase());
+            migrations.add(migration);
         }
         return migrations;
     }
@@ -123,7 +127,7 @@ public class JailsProject {
         for (IMigration migration : migrations) {
             Long version = migration.getVersion();
             if (currentDbVersion > version && version >= toVersion) {
-                migration.down();
+                migration.executeDown();
                 currentDbVersion = version;
             }
         }
@@ -133,7 +137,7 @@ public class JailsProject {
         for (IMigration migration : migrations) {
             Long version = migration.getVersion();
             if (currentDbVersion < version && version <= toVersion) {
-                migration.up();
+                migration.executeUp();
                 currentDbVersion = version;
             }
         }
@@ -158,7 +162,7 @@ public class JailsProject {
             createFile(migrationsPropertiesFile);
             FileWriter fileWriter = new FileWriter(migrationsPropertiesFile);
             fileWriter.write("# This file is auto generated. Instead of editing this file, please use the\n" +
-                    "# migrations feature of Jails to incrementally modify your database, and\n" +
+                    "# migrations feature of Jails to incrementally modify your name, and\n" +
                     "# then regenerate this version file.\n" +
                     "development=0\n" +
                     "test=0\n" +
@@ -177,8 +181,8 @@ public class JailsProject {
             createFile(dbPropertiesFile);
             FileWriter fileWriter = new FileWriter(dbPropertiesFile);
             fileWriter.write("development.adapter=mysql\n" +
-                    "development.database=jails_development\n" +
-                    "development.username=root\n" +
+                    "development.name=jails_development\n" +
+                    "development.user=root\n" +
                     "development.password=password");
             fileWriter.flush();
             fileWriter.close();
@@ -214,5 +218,9 @@ public class JailsProject {
 
     public boolean addModel(String modelName) {
         return createFile(new File(modelsPath + "\\" + new StringUtil(modelName).camelize() + ".java"));
+    }
+
+    public IDatabase getDatabase() {
+        return DatabaseConfiguration.getInstance(this).getDatabase();
     }
 }

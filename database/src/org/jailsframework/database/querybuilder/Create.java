@@ -1,6 +1,6 @@
 package org.jailsframework.database.querybuilder;
 
-import org.jailsframework.database.DBObject;
+import org.jailsframework.database.DBComponent;
 
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
@@ -9,13 +9,13 @@ import org.jailsframework.database.DBObject;
  *          Time: 9:54:14 PM
  */
 public class Create extends AbstractQueryBuilder {
-    private DBObject dbObj;
+    private DBComponent dbComponent;
 
-    public Create(DBObject dbObj) {
-        this.dbObj = dbObj;
+    public Create(DBComponent dbObj) {
+        this.dbComponent = dbObj;
     }
 
     public String build() {
-        return dbObj.createQuery();
+        return dbComponent.createQuery();
     }
 }
