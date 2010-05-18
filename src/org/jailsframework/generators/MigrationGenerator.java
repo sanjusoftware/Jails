@@ -15,14 +15,13 @@ import java.util.Date;
  *          Date: Apr 4, 2010
  *          Time: 12:21:35 AM
  */
-public class MigrationGenerator {
-    private JailsProject project;
-    private static final String TEMPLATE = "\\src\\org\\jailsframework\\generators\\templates\\migration.vm";
+public class MigrationGenerator extends AbstractGenerator {
 
     public MigrationGenerator(JailsProject project) {
-        this.project = project;
+        super(project);
     }
 
+    @Override
     public boolean generate(String migrationFileName) {
         try {
             long version = getMigrationVersion();
@@ -41,7 +40,7 @@ public class MigrationGenerator {
     private void writeMigrationContent(File migrationFile, String migrationFileNameWithTimeStamp, long version) throws Exception {
         VelocityEngine velocityEngine = new VelocityEngine();
         velocityEngine.init();
-        Template template = velocityEngine.getTemplate(TEMPLATE);
+        Template template = velocityEngine.getTemplate(TEMPLATES_PATH + "\\migration.vm");
         VelocityContext context = new VelocityContext();
         context.put("migrationFileName", migrationFileNameWithTimeStamp);
         context.put("package", project.getMigrationPackage());

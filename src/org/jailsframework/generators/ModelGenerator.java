@@ -15,12 +15,10 @@ import java.io.FileWriter;
  *          Date: May 19, 2010
  *          Time: 1:41:50 AM
  */
-public class ModelGenerator {
-    private JailsProject project;
-    private static final String TEMPLATE = "\\src\\org\\jailsframework\\generators\\templates\\model.vm";
+public class ModelGenerator extends AbstractGenerator {
 
     public ModelGenerator(JailsProject project) {
-        this.project = project;
+        super(project);
     }
 
     public boolean generate(String modelName) {
@@ -39,7 +37,7 @@ public class ModelGenerator {
     private void writeModelContent(File modelFile, String modelName) throws Exception {
         VelocityEngine velocityEngine = new VelocityEngine();
         velocityEngine.init();
-        Template template = velocityEngine.getTemplate(TEMPLATE);
+        Template template = velocityEngine.getTemplate(TEMPLATES_PATH + "\\model.vm");
         VelocityContext context = new VelocityContext();
         context.put("modelName", modelName);
         context.put("package", project.getModelPackage());
@@ -49,4 +47,5 @@ public class ModelGenerator {
         fileWriter.close();
 
     }
+
 }
