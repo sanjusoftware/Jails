@@ -1,13 +1,11 @@
 package org.jailsframework.generators;
 
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
 import org.jailsframework.util.FileUtil;
 import org.jailsframework.util.StringUtil;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
@@ -26,7 +24,7 @@ public class ModelGenerator extends AbstractGenerator {
             String camelizedModelName = new StringUtil(modelName).camelize();
             File modelFile = new File(project.getModelsPath() + "\\" + camelizedModelName + ".java");
             FileUtil.createFile(modelFile);
-            writeModelContent(modelFile, camelizedModelName);
+            writeContent(modelFile, getSubstitutions(modelName));
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -34,18 +32,16 @@ public class ModelGenerator extends AbstractGenerator {
         }
     }
 
-    private void writeModelContent(File modelFile, String modelName) throws Exception {
-        VelocityEngine velocityEngine = new VelocityEngine();
-        velocityEngine.init();
-        Template template = velocityEngine.getTemplate(TEMPLATES_PATH + "\\model.vm");
-        VelocityContext context = new VelocityContext();
-        context.put("modelName", modelName);
-        context.put("package", project.getModelPackage());
-        FileWriter fileWriter = new FileWriter(modelFile);
-        template.merge(context, fileWriter);
-        fileWriter.flush();
-        fileWriter.close();
+    @Override
+    protected String getTemplateName() {
+        return "\\model.vm";
+    }
 
+    private Map<String, String> getSubstitutions(String modelName) {
+        Map<String, String> substitutions = new HashMap<String, String>();
+        substitutions.put("modelName", modelName);
+        substitutions.put("package", project.getModelPackage());
+        return substitutions;
     }
 
 }

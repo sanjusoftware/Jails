@@ -2,7 +2,7 @@ package $package;
 
 import org.jailsframework.database.migration.Migration;
 
-public class $migrationFileName extends Migration {
+public class $migrationFileNameWithTimeStamp extends Migration {
 
     private final Long version = $version;
 

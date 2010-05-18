@@ -1,13 +1,11 @@
 package org.jailsframework.generators;
 
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
 import org.jailsframework.util.FileUtil;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
@@ -25,11 +23,11 @@ public class MigrationGenerator extends AbstractGenerator {
     public boolean generate(String migrationFileName) {
         try {
             long version = getMigrationVersion();
-            String migrationFileNameWithVersion = getMigrationFileNameWithVersion(version, migrationFileName);
+            String migrationFileNameWithTimeStamp = getMigrationFileNameWithTimeStamp(version, migrationFileName);
             File migrationFile = new File(project.getMigrationsPath(),
-                    migrationFileNameWithVersion.concat(".java"));
+                    migrationFileNameWithTimeStamp.concat(".java"));
             FileUtil.createFile(migrationFile);
-            writeMigrationContent(migrationFile, migrationFileNameWithVersion, version);
+            writeContent(migrationFile, getSubstitutions(version, migrationFileNameWithTimeStamp));
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -37,22 +35,19 @@ public class MigrationGenerator extends AbstractGenerator {
         }
     }
 
-    private void writeMigrationContent(File migrationFile, String migrationFileNameWithTimeStamp, long version) throws Exception {
-        VelocityEngine velocityEngine = new VelocityEngine();
-        velocityEngine.init();
-        Template template = velocityEngine.getTemplate(TEMPLATES_PATH + "\\migration.vm");
-        VelocityContext context = new VelocityContext();
-        context.put("migrationFileName", migrationFileNameWithTimeStamp);
-        context.put("package", project.getMigrationPackage());
-        context.put("version", version + "L");
-        FileWriter fileWriter = new FileWriter(migrationFile);
-        template.merge(context, fileWriter);
-        fileWriter.flush();
-        fileWriter.close();
-
+    protected String getTemplateName() {
+        return "\\migration.vm";
     }
 
-    private String getMigrationFileNameWithVersion(long version, String migrationFileName) {
+    private Map<String, String> getSubstitutions(long version, String migrationFileNameWithTimeStamp) {
+        Map<String, String> substitutions = new HashMap<String, String>();
+        substitutions.put("migrationFileNameWithTimeStamp", migrationFileNameWithTimeStamp);
+        substitutions.put("package", project.getMigrationPackage());
+        substitutions.put("version", version + "L");
+        return substitutions;
+    }
+
+    private String getMigrationFileNameWithTimeStamp(long version, String migrationFileName) {
         return "Migration_" + version + "_".concat(migrationFileName);
     }
 
