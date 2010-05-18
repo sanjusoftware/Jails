@@ -1,20 +1,7 @@
 package $package;
 
-import org.jailsframework.database.migration.Migration;
+import org.jailsframework.Record;
 
-public class $migrationFileName extends Migration {
+public class $modelName extends Record {
 
-    private final Long version = $version;
-
-    public void up() {
-
-    }
-
-    public void down() {
-
-    }
-
-    public Long getVersion() {
-        return version;
-    }
 }

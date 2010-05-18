@@ -5,7 +5,6 @@ import org.jailsframework.database.migration.IMigration;
 import org.jailsframework.exceptions.JailsException;
 import org.jailsframework.loaders.DatabaseConfiguration;
 import org.jailsframework.util.FileUtil;
-import org.jailsframework.util.StringUtil;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -76,8 +75,20 @@ public class JailsProject {
         return dbPropertiesFile;
     }
 
+    public String getModelsPath() {
+        return modelsPath;
+    }
+
     public String getMigrationsPath() {
         return migrationsPath;
+    }
+
+    public String getModelPackage() {
+        return name.toLowerCase().concat(".app.models");
+    }
+
+    public String getMigrationPackage() {
+        return name.toLowerCase().concat(".db.migrate");
     }
 
     public String getEnvironment() {
@@ -86,10 +97,6 @@ public class JailsProject {
 
     public void destroy() {
         FileUtil.deleteDirRecursively(new File(root));
-    }
-
-    public String getMigrationPackage() {
-        return name.toLowerCase().concat(".db.migrate");
     }
 
     protected List<IMigration> getMigrations() {
@@ -120,6 +127,14 @@ public class JailsProject {
         }
         updateCurrentDbVersion();
         return currentDbVersion.toString();
+    }
+
+    public boolean addModel(String modelName) {
+        return new ModelGenerator(this).generate(modelName);
+    }
+
+    public IDatabase getDatabase() {
+        return DatabaseConfiguration.getInstance(this).getDatabase();
     }
 
     private void migrateDown(Long toVersion, List<IMigration> migrations) {
@@ -160,12 +175,13 @@ public class JailsProject {
         try {
             FileUtil.createFile(migrationsPropertiesFile);
             FileWriter fileWriter = new FileWriter(migrationsPropertiesFile);
-            fileWriter.write("# This file is auto generated. Instead of editing this file, please use the\n" +
-                    "# migrations feature of Jails to incrementally modify your database, and\n" +
-                    "# then regenerate this version file.\n" +
-                    "development=0\n" +
-                    "test=0\n" +
-                    "production=0");
+            fileWriter.write(
+                    "# This file is auto generated. Instead of editing this file, please use the\n" +
+                            "# migrations feature of Jails to incrementally modify your database, and\n" +
+                            "# then regenerate this version file.\n" +
+                            "development=0\n" +
+                            "test=0\n" +
+                            "production=0");
             fileWriter.flush();
             fileWriter.close();
             return true;
@@ -179,12 +195,22 @@ public class JailsProject {
         try {
             FileUtil.createFile(dbPropertiesFile);
             FileWriter fileWriter = new FileWriter(dbPropertiesFile);
-            fileWriter.write(
+            fileWriter.write("# This file is auto generated. Please provide the database details in here.\n" +
                     "development.adapter=mysql\n" +
-                            "development.driver=com.mysql.jdbc.Driver\n" +
-                            "development.name=jails_development\n" +
-                            "development.user=root\n" +
-                            "development.password=password");
+                    "development.driver=com.mysql.jdbc.Driver\n" +
+                    "development.name=jails_development\n" +
+                    "development.user=root\n" +
+                    "development.password=password\n\n" +
+                    "test.adapter=mysql\n" +
+                    "test.driver=com.mysql.jdbc.Driver\n" +
+                    "test.name=jails_development\n" +
+                    "test.user=root\n" +
+                    "test.password=password\n\n" +
+                    "production.adapter=mysql\n" +
+                    "production.driver=com.mysql.jdbc.Driver\n" +
+                    "production.name=jails_development\n" +
+                    "production.user=root\n" +
+                    "production.password=password\n\n");
             fileWriter.flush();
             fileWriter.close();
             return true;
@@ -215,13 +241,5 @@ public class JailsProject {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public boolean addModel(String modelName) {
-        return FileUtil.createFile(new File(modelsPath + "\\" + new StringUtil(modelName).camelize() + ".java"));
-    }
-
-    public IDatabase getDatabase() {
-        return DatabaseConfiguration.getInstance(this).getDatabase();
     }
 }

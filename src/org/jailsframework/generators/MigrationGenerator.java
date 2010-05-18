@@ -17,7 +17,7 @@ import java.util.Date;
  */
 public class MigrationGenerator {
     private JailsProject project;
-    private static final String MIGRATION_TEMPLATE = "\\src\\org\\jailsframework\\generators\\templates\\migration.vm";
+    private static final String TEMPLATE = "\\src\\org\\jailsframework\\generators\\templates\\migration.vm";
 
     public MigrationGenerator(JailsProject project) {
         this.project = project;
@@ -41,7 +41,7 @@ public class MigrationGenerator {
     private void writeMigrationContent(File migrationFile, String migrationFileNameWithTimeStamp, long version) throws Exception {
         VelocityEngine velocityEngine = new VelocityEngine();
         velocityEngine.init();
-        Template template = velocityEngine.getTemplate(MIGRATION_TEMPLATE);
+        Template template = velocityEngine.getTemplate(TEMPLATE);
         VelocityContext context = new VelocityContext();
         context.put("migrationFileName", migrationFileNameWithTimeStamp);
         context.put("package", project.getMigrationPackage());
