@@ -129,6 +129,10 @@ public class JailsProject {
         return currentDbVersion.toString();
     }
 
+    public boolean addMigration(String name) {
+        return new MigrationGenerator(this).generate(name);
+    }
+
     public boolean addModel(String modelName) {
         return new ModelGenerator(this).generate(modelName);
     }

@@ -47,7 +47,12 @@ public class JailsProjectTest extends JailsProjectTestBase {
 
     @Test
     public void shouldGenerateAModelGivenAValidName() {
-        Assert.assertTrue("Should have created model \"employee\"", project.addModel("employee"));
+        Assert.assertTrue("Should have created model \"employee_records\"", project.addModel("employee_records"));
+    }
+
+    @Test
+    public void shouldGenerateAMigrationGivenAValidName() {
+        Assert.assertTrue("Should have created migration \"employee\"", project.addMigration("add_employee_table"));
     }
 
     @Test(expected = JailsException.class)

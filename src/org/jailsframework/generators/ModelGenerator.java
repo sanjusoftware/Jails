@@ -2,7 +2,6 @@ package org.jailsframework.generators;
 
 import org.jailsframework.exceptions.JailsException;
 import org.jailsframework.util.FileUtil;
-import org.jailsframework.util.StringUtil;
 
 import java.io.File;
 import java.util.HashMap;
@@ -21,8 +20,7 @@ public class ModelGenerator extends AbstractGenerator {
     }
 
     protected void doGenerate(String modelName) throws Exception {
-        String camelizedModelName = new StringUtil(modelName).camelize();
-        File modelFile = new File(project.getModelsPath() + "\\" + camelizedModelName + ".java");
+        File modelFile = new File(project.getModelsPath() + "\\" + modelName + ".java");
         if (!FileUtil.createFile(modelFile)) {
             throw new JailsException("Could not generate migration");
         }

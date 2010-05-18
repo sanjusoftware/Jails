@@ -3,6 +3,7 @@ package org.jailsframework.generators;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.jailsframework.util.StringUtil;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -24,7 +25,7 @@ public abstract class AbstractGenerator {
 
     public boolean generate(String componentFileName) {
         try {
-            doGenerate(componentFileName);
+            doGenerate(new StringUtil(componentFileName).camelize());
             return true;
         } catch (Exception e) {
             e.printStackTrace();

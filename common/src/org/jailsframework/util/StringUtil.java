@@ -17,7 +17,21 @@ public class StringUtil {
     }
 
     public String camelize() {
-        return value.replaceFirst(value.charAt(0) + "", value.toUpperCase().charAt(0) + "");
+
+        StringBuffer camelizedValue = new StringBuffer();
+        String[] words = breakByUnderScores();
+        for (String word : words) {
+            camelizedValue.append(camelize(word));
+        }
+        return camelizedValue.toString();
+    }
+
+    private String camelize(String word) {
+        return word.replaceFirst(word.charAt(0) + "", word.toUpperCase().charAt(0) + "");
+    }
+
+    private String[] breakByUnderScores() {
+        return value.split("_");
     }
 
     public String tabelize() {

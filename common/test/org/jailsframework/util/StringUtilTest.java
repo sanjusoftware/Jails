@@ -17,12 +17,13 @@ public class StringUtilTest {
         Assert.assertEquals("EmpLoyee", new StringUtil("empLoyee").camelize());
         Assert.assertEquals("Eemployee", new StringUtil("eemployee").camelize());
         Assert.assertEquals("Employee", new StringUtil("Employee").camelize());
+        Assert.assertEquals("EmployeeRecordFile", new StringUtil("employee_record_file").camelize());
     }
 
     @Test
     public void shouldTabelizeGivenString() {
         Assert.assertEquals("employees", new StringUtil("Employee").tabelize());
         Assert.assertEquals("employee_records", new StringUtil("EmployeeRecord").tabelize());
-        Assert.assertEquals("employee_record_founds", new StringUtil("EmployeeRecordFound").tabelize());
+        Assert.assertEquals("employee_record_files", new StringUtil("EmployeeRecordFile").tabelize());
     }
 }
