@@ -28,9 +28,8 @@ public abstract class AbstractGenerator {
         VelocityEngine velocityEngine = new VelocityEngine();
         velocityEngine.init();
         Template template = velocityEngine.getTemplate(TEMPLATES_PATH + getTemplateName());
-        VelocityContext context = new VelocityContext(substitutions);
         FileWriter fileWriter = new FileWriter(file);
-        template.merge(context, fileWriter);
+        template.merge(new VelocityContext(substitutions), fileWriter);
         fileWriter.flush();
         fileWriter.close();
 
