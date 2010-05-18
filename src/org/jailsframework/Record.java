@@ -1,5 +1,6 @@
-package org.jailsframework.database;
+package org.jailsframework;
 
+import org.jailsframework.database.Column;
 import org.jailsframework.querybuilder.Insert;
 import org.jailsframework.util.StringUtil;
 

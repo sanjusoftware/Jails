@@ -16,19 +16,20 @@ import java.util.Properties;
  */
 
 public class DatabaseConfiguration {
-    private static Properties prop;
+    private Properties prop;
     private static DatabaseConfiguration dbConfig;
     private IDatabase database;
     private JailsProject project;
 
     public static DatabaseConfiguration getInstance(JailsProject project) {
-        if (dbConfig == null)
+        if (dbConfig == null) {
             dbConfig = new DatabaseConfiguration(project);
+        }
         return dbConfig;
     }
 
-    private DatabaseConfiguration(JailsProject jailsProject) {
-        project = jailsProject;
+    private DatabaseConfiguration(JailsProject project) {
+        this.project = project;
         loadDatabaseProperties();
     }
 

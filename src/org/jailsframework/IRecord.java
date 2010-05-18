@@ -1,4 +1,4 @@
-package org.jailsframework.database;
+package org.jailsframework;
 
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>

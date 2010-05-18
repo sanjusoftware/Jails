@@ -1,4 +1,4 @@
-package org.jailsframework.database;
+package org.jailsframework;
 
 import org.junit.Before;
 import org.junit.Test;
