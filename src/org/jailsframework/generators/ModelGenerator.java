@@ -1,5 +1,6 @@
 package org.jailsframework.generators;
 
+import org.jailsframework.exceptions.JailsException;
 import org.jailsframework.util.FileUtil;
 import org.jailsframework.util.StringUtil;
 
@@ -19,17 +20,13 @@ public class ModelGenerator extends AbstractGenerator {
         super(project);
     }
 
-    public boolean generate(String modelName) {
-        try {
-            String camelizedModelName = new StringUtil(modelName).camelize();
-            File modelFile = new File(project.getModelsPath() + "\\" + camelizedModelName + ".java");
-            FileUtil.createFile(modelFile);
-            writeContent(modelFile, getSubstitutions(modelName));
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+    protected void doGenerate(String modelName) throws Exception {
+        String camelizedModelName = new StringUtil(modelName).camelize();
+        File modelFile = new File(project.getModelsPath() + "\\" + camelizedModelName + ".java");
+        if (!FileUtil.createFile(modelFile)) {
+            throw new JailsException("Could not generate migration");
         }
+        writeContent(modelFile, getSubstitutions(modelName));
     }
 
     @Override

@@ -22,7 +22,17 @@ public abstract class AbstractGenerator {
         this.project = project;
     }
 
-    public abstract boolean generate(String ComponentFileName);
+    public boolean generate(String componentFileName) {
+        try {
+            doGenerate(componentFileName);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    protected abstract void doGenerate(String componentFileName) throws Exception;
 
     protected void writeContent(File file, Map<String, String> substitutions) throws Exception {
         VelocityEngine velocityEngine = new VelocityEngine();

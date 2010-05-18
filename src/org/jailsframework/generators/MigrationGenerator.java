@@ -1,5 +1,6 @@
 package org.jailsframework.generators;
 
+import org.jailsframework.exceptions.JailsException;
 import org.jailsframework.util.FileUtil;
 
 import java.io.File;
@@ -19,20 +20,15 @@ public class MigrationGenerator extends AbstractGenerator {
         super(project);
     }
 
-    @Override
-    public boolean generate(String migrationFileName) {
-        try {
-            long version = getMigrationVersion();
-            String migrationFileNameWithTimeStamp = getMigrationFileNameWithTimeStamp(version, migrationFileName);
-            File migrationFile = new File(project.getMigrationsPath(),
-                    migrationFileNameWithTimeStamp.concat(".java"));
-            FileUtil.createFile(migrationFile);
-            writeContent(migrationFile, getSubstitutions(version, migrationFileNameWithTimeStamp));
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+    protected void doGenerate(String migrationFileName) throws Exception {
+        long version = getMigrationVersion();
+        String migrationFileNameWithTimeStamp = getMigrationFileNameWithTimeStamp(version, migrationFileName);
+        File migrationFile = new File(project.getMigrationsPath(),
+                migrationFileNameWithTimeStamp.concat(".java"));
+        if (!FileUtil.createFile(migrationFile)) {
+            throw new JailsException("Could not generate migration");
         }
+        writeContent(migrationFile, getSubstitutions(version, migrationFileNameWithTimeStamp));
     }
 
     protected String getTemplateName() {
