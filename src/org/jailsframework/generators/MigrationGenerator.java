@@ -3,12 +3,11 @@ package org.jailsframework.generators;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.jailsframework.util.FileUtil;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.util.Date;
-
-import static org.jailsframework.util.FileUtil.createFile;
 
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
@@ -30,7 +29,7 @@ public class MigrationGenerator {
             String migrationFileNameWithVersion = getMigrationFileNameWithVersion(version, migrationFileName);
             File migrationFile = new File(project.getMigrationsPath(),
                     migrationFileNameWithVersion.concat(".java"));
-            createFile(migrationFile);
+            FileUtil.createFile(migrationFile);
             writeMigrationContent(migrationFile, migrationFileNameWithVersion, version);
             return true;
         } catch (Exception e) {

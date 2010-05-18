@@ -48,14 +48,24 @@ public abstract class Database implements IDatabase {
     }
 
     private boolean getConnection(String query) {
+        Connection connection = null;
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + name, user, password);
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + name, user, password);
             Statement statement = connection.createStatement();
             statement.executeQuery(query);
         }
-        catch (SQLException x) {
+        catch (SQLException e) {
             System.out.println("Could not get connection!");
+            e.printStackTrace();
             return false;
+        } finally {
+            if (connection != null) try {
+                connection.close();
+            } catch (SQLException e) {
+                System.out.println("Could not close connection!");
+                e.printStackTrace();
+            }
+
         }
         return true;
     }

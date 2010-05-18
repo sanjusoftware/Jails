@@ -4,14 +4,13 @@ import org.jailsframework.database.IDatabase;
 import org.jailsframework.database.migration.IMigration;
 import org.jailsframework.exceptions.JailsException;
 import org.jailsframework.loaders.DatabaseConfiguration;
+import org.jailsframework.util.FileUtil;
 import org.jailsframework.util.StringUtil;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
-import static org.jailsframework.util.FileUtil.*;
 
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
@@ -60,15 +59,15 @@ public class JailsProject {
     }
 
     public boolean create() {
-        return makeDirectory(root) &&
-                makeDirectory(appPath) &&
-                makeDirectory(modelsPath) &&
-                makeDirectory(controllersPath) &&
-                makeDirectory(viewsPath) &&
-                makeDirectory(helpersPath) &&
-                makeDirectory(configPath) &&
-                makeDirectory(dbPath) &&
-                makeDirectory(migrationsPath) &&
+        return FileUtil.makeDirectory(root) &&
+                FileUtil.makeDirectory(appPath) &&
+                FileUtil.makeDirectory(modelsPath) &&
+                FileUtil.makeDirectory(controllersPath) &&
+                FileUtil.makeDirectory(viewsPath) &&
+                FileUtil.makeDirectory(helpersPath) &&
+                FileUtil.makeDirectory(configPath) &&
+                FileUtil.makeDirectory(dbPath) &&
+                FileUtil.makeDirectory(migrationsPath) &&
                 createDatabasePropertiesFile() &&
                 createMigrationPropertiesFile();
     }
@@ -86,7 +85,7 @@ public class JailsProject {
     }
 
     public void destroy() {
-        deleteDirRecursively(new File(root));
+        FileUtil.deleteDirRecursively(new File(root));
     }
 
     public String getMigrationPackage() {
@@ -159,7 +158,7 @@ public class JailsProject {
 
     private boolean createMigrationPropertiesFile() {
         try {
-            createFile(migrationsPropertiesFile);
+            FileUtil.createFile(migrationsPropertiesFile);
             FileWriter fileWriter = new FileWriter(migrationsPropertiesFile);
             fileWriter.write("# This file is auto generated. Instead of editing this file, please use the\n" +
                     "# migrations feature of Jails to incrementally modify your database, and\n" +
@@ -178,7 +177,7 @@ public class JailsProject {
 
     private boolean createDatabasePropertiesFile() {
         try {
-            createFile(dbPropertiesFile);
+            FileUtil.createFile(dbPropertiesFile);
             FileWriter fileWriter = new FileWriter(dbPropertiesFile);
             fileWriter.write(
                     "development.adapter=mysql\n" +
@@ -219,7 +218,7 @@ public class JailsProject {
     }
 
     public boolean addModel(String modelName) {
-        return createFile(new File(modelsPath + "\\" + new StringUtil(modelName).camelize() + ".java"));
+        return FileUtil.createFile(new File(modelsPath + "\\" + new StringUtil(modelName).camelize() + ".java"));
     }
 
     public IDatabase getDatabase() {
