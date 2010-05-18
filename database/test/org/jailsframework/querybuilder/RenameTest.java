@@ -1,4 +1,4 @@
-package org.jailsframework.database.querybuilder;
+package org.jailsframework.querybuilder;
 
 import junit.framework.Assert;
 import org.jailsframework.database.Table;

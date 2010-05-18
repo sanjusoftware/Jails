@@ -20,6 +20,7 @@ public class FileUtil {
                 }
             }
         }
+        System.out.println("deleting dir = " + dir.getName());
         return dir.delete();
     }
 

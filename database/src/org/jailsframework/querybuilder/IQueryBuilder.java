@@ -1,4 +1,4 @@
-package org.jailsframework.database.querybuilder;
+package org.jailsframework.querybuilder;
 
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>

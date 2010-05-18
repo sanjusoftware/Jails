@@ -18,18 +18,18 @@ public abstract class Database implements IDatabase {
     private String user;
     private String password;
     private String driver;
+    private String url;
 
-    public Database(String driver, String name, String user, String password) {
+    public Database(String url, String driver, String name, String user, String password) {
         this.driver = driver;
         this.user = user;
         this.name = name;
         this.password = password;
+        this.url = url;
     }
 
     public boolean execute(String query) {
-        if (!loadDriver()) return false;
-        if (!getConnection(query)) return false;
-        return false;
+        return loadDriver() && fire(query);
     }
 
     public List<Record> executeQuery(String query) {
@@ -47,26 +47,41 @@ public abstract class Database implements IDatabase {
         return true;
     }
 
-    private boolean getConnection(String query) {
+    private boolean fire(String query) {
         Connection connection = null;
+        Statement statement = null;
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + name, user, password);
-            Statement statement = connection.createStatement();
+            connection = DriverManager.getConnection(url + name, user, password);
+            statement = connection.createStatement();
             statement.executeQuery(query);
         }
-        catch (SQLException e) {
+        catch (Exception e) {
             System.out.println("Could not get connection!");
             e.printStackTrace();
             return false;
         } finally {
-            if (connection != null) try {
-                connection.close();
-            } catch (SQLException e) {
-                System.out.println("Could not close connection!");
-                e.printStackTrace();
-            }
-
+            closeStatement(statement);
+            closeConnection(connection);
         }
         return true;
+    }
+
+    private void closeConnection(Connection connection) {
+        if (connection != null) try {
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println("Could not close connection!");
+            e.printStackTrace();
+        }
+    }
+
+    private void closeStatement(Statement statement) {
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                System.out.println("Could not close statement!");
+            }
+        }
     }
 }

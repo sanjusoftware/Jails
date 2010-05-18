@@ -1,6 +1,6 @@
 package org.jailsframework.database;
 
-import org.jailsframework.database.querybuilder.Select;
+import org.jailsframework.querybuilder.Select;
 import org.junit.Before;
 import org.junit.Test;
 

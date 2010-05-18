@@ -1,6 +1,6 @@
 package org.jailsframework.database;
 
-import org.jailsframework.database.querybuilder.Insert;
+import org.jailsframework.querybuilder.Insert;
 import org.jailsframework.util.StringUtil;
 
 import java.util.List;

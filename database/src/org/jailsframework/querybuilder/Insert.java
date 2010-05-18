@@ -1,4 +1,4 @@
-package org.jailsframework.database.querybuilder;
+package org.jailsframework.querybuilder;
 
 import org.jailsframework.database.Column;
 

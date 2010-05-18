@@ -12,10 +12,10 @@ import org.junit.Test;
 public class DatabaseTest {
     @Test
     public void shouldExecuteAGivenQuery() {
-        Assert.assertTrue(getDatabase().execute("Select *  from users"));
+        Assert.assertTrue(getDatabase().execute("Select * from users"));
     }
 
     private IDatabase getDatabase() {
-        return new MysqlDatabase("com.mysql.jdbc.Driver", "jailstest", "root", "");
+        return new MysqlDatabase("jdbc:mysql://localhost:3306/", "com.mysql.jdbc.Driver", "test", "root", "");
     }
 }

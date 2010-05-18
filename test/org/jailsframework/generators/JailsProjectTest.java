@@ -27,7 +27,7 @@ public class JailsProjectTest extends JailsProjectTestBase {
         project = new JailsProject("test", "jailsproject") {
             @Override
             protected List<IMigration> getMigrations() {
-                IDatabase mysqlDatabase = new MysqlDatabase(null, null, null, null);
+                IDatabase mysqlDatabase = new MysqlDatabase("jdbc:mysql://localhost:3306/", null, null, null, null);
                 List<IMigration> migrations = new ArrayList<IMigration>();
                 migrations.add(getTestMigration(1232L, mysqlDatabase));
                 migrations.add(getTestMigration(1234L, mysqlDatabase));
@@ -90,7 +90,6 @@ public class JailsProjectTest extends JailsProjectTestBase {
             public Long getVersion() {
                 return version;
             }
-
         };
     }
 }
