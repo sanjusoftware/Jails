@@ -8,6 +8,4 @@ package org.jailsframework.querybuilder;
  */
 public interface IQueryBuilder {
     String build();
-
-    boolean execute();
 }

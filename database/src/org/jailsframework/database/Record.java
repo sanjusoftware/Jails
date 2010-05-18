@@ -15,7 +15,8 @@ public abstract class Record implements IRecord {
     private List<Column> columns;
 
     public boolean create() {
-        return new Insert().into(table()).values(columns).execute();
+        new Insert().into(table()).values(columns);
+        return false;
     }
 
     public boolean update() {

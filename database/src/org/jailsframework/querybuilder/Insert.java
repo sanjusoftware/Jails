@@ -10,7 +10,7 @@ import java.util.List;
  *          Date: May 9, 2010
  *          Time: 11:13:52 AM
  */
-public class Insert extends AbstractQueryBuilder {
+public class Insert implements IQueryBuilder {
     private String table;
     private List<Column> columns;
 

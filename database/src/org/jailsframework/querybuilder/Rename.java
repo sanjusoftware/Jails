@@ -8,7 +8,7 @@ import org.jailsframework.database.DBComponent;
  *          Date: May 8, 2010
  *          Time: 11:16:29 PM
  */
-public class Rename extends AbstractQueryBuilder {
+public class Rename implements IQueryBuilder {
     private DBComponent dbObj;
     private String newName;
 

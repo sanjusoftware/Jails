@@ -8,7 +8,7 @@ import org.jailsframework.database.DBComponent;
  *          Date: May 8, 2010
  *          Time: 9:54:14 PM
  */
-public class Create extends AbstractQueryBuilder {
+public class Create implements IQueryBuilder {
     private DBComponent dbComponent;
 
     public Create(DBComponent dbObj) {

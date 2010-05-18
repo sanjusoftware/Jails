@@ -1,7 +1,5 @@
 package org.jailsframework.querybuilder;
 
-import org.jailsframework.database.Record;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +9,7 @@ import java.util.List;
  *          Date: Apr 28, 2010
  *          Time: 12:11:58 PM
  */
-public class Select extends AbstractQueryBuilder implements ISelectQueryBuilder {
+public class Select implements ISelectQueryBuilder {
     private String table;
     private String columns;
     private List<Where> whereClauses;
@@ -37,9 +35,9 @@ public class Select extends AbstractQueryBuilder implements ISelectQueryBuilder 
         return this;
     }
 
-    public List<Record> executeQuery() {
-        return database.executeQuery(build());
-    }
+//    public List<Record> executeQuery() {
+//        return database.executeQuery(build());
+//    }
 
     public String build() {
         return "SELECT " + getColumns() + " FROM " + table + getWhereClauses() + ";";
