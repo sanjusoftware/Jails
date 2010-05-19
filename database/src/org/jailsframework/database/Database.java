@@ -1,11 +1,6 @@
 package org.jailsframework.database;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.*;
 
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
@@ -32,8 +27,8 @@ public abstract class Database implements IDatabase {
         return loadDriver() && fire(query);
     }
 
-    public List<Record> executeQuery(String query) {
-        return new ArrayList<Record>();
+    public ResultSet executeQuery(String query) {
+        return null;
     }
 
     private boolean loadDriver() {

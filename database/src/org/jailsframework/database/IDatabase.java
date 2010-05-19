@@ -1,6 +1,6 @@
 package org.jailsframework.database;
 
-import java.util.List;
+import java.sql.ResultSet;
 
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
@@ -11,5 +11,5 @@ import java.util.List;
 public interface IDatabase {
     boolean execute(String query);
 
-    List<Record> executeQuery(String query);
+    ResultSet executeQuery(String query);
 }
