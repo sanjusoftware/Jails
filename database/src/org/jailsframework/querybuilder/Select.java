@@ -35,10 +35,6 @@ public class Select implements ISelectQueryBuilder {
         return this;
     }
 
-//    public List<Record> executeQuery() {
-//        return database.executeQuery(build());
-//    }
-
     public String build() {
         return "SELECT " + getColumns() + " FROM " + table + getWhereClauses() + ";";
     }

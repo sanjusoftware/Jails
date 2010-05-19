@@ -52,6 +52,7 @@ public abstract class Migration implements IMigration {
             throw new JailsException("Database is not specified !!");
         }
         for (String query : queries) {
+            System.out.println("query = " + query);
             database.execute(query);
         }
     }

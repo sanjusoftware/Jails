@@ -167,7 +167,7 @@ public class JailsProject {
 
     private IMigration instantiate(String fileName) {
         try {
-            String className = name.toLowerCase().concat(".db.migrate.").concat(fileName.substring(0, fileName.lastIndexOf('.')));
+            String className = getMigrationPackage().concat(".").concat(fileName.substring(0, fileName.lastIndexOf('.')));
             return (IMigration) Class.forName(className).newInstance();
         } catch (InstantiationException e) {
             e.printStackTrace();

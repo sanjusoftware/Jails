@@ -7,6 +7,7 @@ import org.jailsframework.database.MysqlDatabase;
 import org.jailsframework.database.migration.IMigration;
 import org.jailsframework.database.migration.Migration;
 import org.jailsframework.exceptions.JailsException;
+import org.jailsframework.querybuilder.Select;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -77,6 +78,11 @@ public class JailsProjectTest extends JailsProjectTestBase {
         Assert.assertEquals("1236", project.migrate(1236L));
     }
 
+    @Test
+    public void shouldExecuteTheQueriesInMigrateUpIfMigratedUp() {
+        Assert.assertEquals("1237", project.migrate());
+    }
+
     private Migration getTestMigration(final Long version, final IDatabase database) {
         return new Migration() {
 
@@ -85,7 +91,7 @@ public class JailsProjectTest extends JailsProjectTestBase {
             }
 
             public void up() {
-
+                addAction(new Select().from("users").build());
             }
 
             public void down() {

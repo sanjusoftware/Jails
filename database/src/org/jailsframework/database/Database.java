@@ -21,10 +21,11 @@ public abstract class Database implements IDatabase {
         this.name = name;
         this.password = password;
         this.url = url;
+        loadDriver();
     }
 
     public boolean execute(String query) {
-        return loadDriver() && fire(query);
+        return fire(query);
     }
 
     public ResultSet executeQuery(String query) {
@@ -48,7 +49,8 @@ public abstract class Database implements IDatabase {
         try {
             connection = DriverManager.getConnection(url + name, user, password);
             statement = connection.createStatement();
-            statement.executeQuery(query);
+            ResultSet resultSet = statement.executeQuery(query);
+            System.out.println("resultSet = " + resultSet);
         }
         catch (Exception e) {
             System.out.println("Could not get connection!");
