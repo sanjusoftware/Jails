@@ -3,6 +3,9 @@ package org.jailsframework.database;
 import junit.framework.Assert;
 import org.junit.Test;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
  * @version $Revision: 0.1
@@ -11,7 +14,19 @@ import org.junit.Test;
  */
 public class DatabaseTest {
     @Test
-    public void shouldExecuteAGivenQuery() {
+    public void shouldExecuteAGivenSelectQuery() {
+        ResultSet resultSet = getDatabase().executeQuery("Select * from users");
+        try {
+            resultSet.next();
+            String name = resultSet.getString("name");
+            Assert.assertEquals("sanjeev", name);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void shouldExecuteAGivenUpdateQuery() {
         Assert.assertTrue(getDatabase().execute("Select * from users"));
     }
 

@@ -43,27 +43,33 @@ public abstract class Database implements IDatabase {
     }
 
     public ResultSet executeQuery(String query) {
-        boolean gotResult = execute(query);
-        if (gotResult) {
-            try {
-                return statement.getResultSet();
-            } catch (SQLException e) {
-                throw new JailsException("Error executing query: " + e);
-            }
+        loadDriver();
+        try {
+            connection = DriverManager.getConnection(url + name, user, password);
+            statement = connection.createStatement();
+            return statement.executeQuery(query);
         }
-        throw new JailsException("Did not get any result!!");
+        catch (Exception e) {
+            throw new JailsException("Error executing query: " + e);
+        } finally {
+            closeStatement();
+            closeConnection();
+        }
     }
 
     public int executeUpdate(String query) {
-        boolean gotResult = execute(query);
-        if (gotResult) {
-            try {
-                return statement.getUpdateCount();
-            } catch (SQLException e) {
-                throw new JailsException("Error executing query: " + e);
-            }
+        loadDriver();
+        try {
+            connection = DriverManager.getConnection(url + name, user, password);
+            statement = connection.createStatement();
+            return statement.executeUpdate(query);
         }
-        throw new JailsException("Did not update anything!!");
+        catch (Exception e) {
+            throw new JailsException("Error executing query: " + e);
+        } finally {
+            closeStatement();
+            closeConnection();
+        }
     }
 
     private boolean loadDriver() {
