@@ -12,4 +12,6 @@ public interface IDatabase {
     boolean execute(String query);
 
     ResultSet executeQuery(String query);
+
+    int executeUpdate(String sql);
 }

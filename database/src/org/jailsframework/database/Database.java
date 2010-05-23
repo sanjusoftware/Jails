@@ -1,5 +1,7 @@
 package org.jailsframework.database;
 
+import org.jailsframework.exceptions.JailsException;
+
 import java.sql.*;
 
 /**
@@ -14,6 +16,8 @@ public abstract class Database implements IDatabase {
     private String password;
     private String driver;
     private String url;
+    Statement statement = null;
+    Connection connection = null;
 
     public Database(String url, String driver, String name, String user, String password) {
         this.driver = driver;
@@ -21,63 +25,71 @@ public abstract class Database implements IDatabase {
         this.name = name;
         this.password = password;
         this.url = url;
-        loadDriver();
     }
 
     public boolean execute(String query) {
-        return fire(query);
+        loadDriver();
+        try {
+            connection = DriverManager.getConnection(url + name, user, password);
+            statement = connection.createStatement();
+            return statement.execute(query);
+        }
+        catch (Exception e) {
+            throw new JailsException("Error executing query: " + e);
+        } finally {
+            closeStatement();
+            closeConnection();
+        }
     }
 
     public ResultSet executeQuery(String query) {
-        return null;
+        boolean gotResult = execute(query);
+        if (gotResult) {
+            try {
+                return statement.getResultSet();
+            } catch (SQLException e) {
+                throw new JailsException("Error executing query: " + e);
+            }
+        }
+        throw new JailsException("Did not get any result!!");
+    }
+
+    public int executeUpdate(String query) {
+        boolean gotResult = execute(query);
+        if (gotResult) {
+            try {
+                return statement.getUpdateCount();
+            } catch (SQLException e) {
+                throw new JailsException("Error executing query: " + e);
+            }
+        }
+        throw new JailsException("Did not update anything!!");
     }
 
     private boolean loadDriver() {
         try {
             Class.forName(driver);
         }
-        catch (Exception x) {
-            System.out.println("Unable to load the driver class!");
-            return false;
-        }
-        return true;
-    }
-
-    private boolean fire(String query) {
-        Connection connection = null;
-        Statement statement = null;
-        try {
-            connection = DriverManager.getConnection(url + name, user, password);
-            statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
-            System.out.println("resultSet = " + resultSet);
-        }
         catch (Exception e) {
-            System.out.println("Could not get connection!");
-            e.printStackTrace();
-            return false;
-        } finally {
-            closeStatement(statement);
-            closeConnection(connection);
+            throw new JailsException("Unable to load the driver class!" + e);
         }
         return true;
     }
 
-    private void closeConnection(Connection connection) {
+    private void closeConnection() {
         if (connection != null) try {
             connection.close();
         } catch (SQLException e) {
-            System.out.println("Could not close connection!");
-            e.printStackTrace();
+            throw new JailsException("Could not close connection!" + e);
         }
     }
 
-    private void closeStatement(Statement statement) {
+    private void closeStatement() {
         if (statement != null) {
             try {
                 statement.close();
             } catch (SQLException e) {
-                System.out.println("Could not close statement!");
+                throw new JailsException("Could not close statement!" + e);
             }
         }
     }
