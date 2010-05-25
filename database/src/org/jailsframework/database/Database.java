@@ -48,9 +48,9 @@ public abstract class Database implements IDatabase {
             connection = DriverManager.getConnection(url + name, user, password);
             statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
-            CachedRowSetImpl crs = new CachedRowSetImpl();
-            crs.populate(resultSet);
-            return crs;
+            CachedRowSetImpl cachedRowSet = new CachedRowSetImpl();
+            cachedRowSet.populate(resultSet);
+            return cachedRowSet;
         }
         catch (Exception e) {
             throw new JailsException("Error executing query: " + e);
