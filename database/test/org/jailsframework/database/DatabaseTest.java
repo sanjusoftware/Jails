@@ -49,7 +49,7 @@ public class DatabaseTest {
     }
 
     @Test
-    public void shouldExecuteAGivenUpdateQuery() {
+    public void shouldExecuteAGivenQuery() {
         Assert.assertTrue(getDatabase().execute("Select * from users"));
     }
 
