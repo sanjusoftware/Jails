@@ -6,7 +6,10 @@ import org.jailsframework.exceptions.JailsException;
 import org.jailsframework.loaders.DatabaseConfiguration;
 import org.jailsframework.util.FileUtil;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -118,7 +121,7 @@ public class JailsProject {
         loadCurrentDbVersion();
         List<IMigration> migrations = getMigrations();
         if (toVersion == null) {
-            toVersion = getLatestMigrationVerion(migrations);
+            toVersion = getLatestMigrationVersion(migrations);
         }
         if (currentDbVersion < toVersion) {
             migrateUp(toVersion, migrations);
@@ -129,7 +132,7 @@ public class JailsProject {
         return currentDbVersion.toString();
     }
 
-    private Long getLatestMigrationVerion(List<IMigration> migrations) {
+    private Long getLatestMigrationVersion(List<IMigration> migrations) {
         return migrations.get(migrations.size() - 1).getVersion();
     }
 
@@ -145,7 +148,7 @@ public class JailsProject {
         return DatabaseConfiguration.getInstance(this).getDatabase();
     }
 
-    private void migrateDown(Long toVersion, List<IMigration> migrations) {
+    private void migrateDown(Long toVersion, Iterable<IMigration> migrations) {
         for (IMigration migration : migrations) {
             Long version = migration.getVersion();
             if (currentDbVersion > version && version >= toVersion) {
@@ -155,7 +158,7 @@ public class JailsProject {
         }
     }
 
-    private void migrateUp(Long toVersion, List<IMigration> migrations) {
+    private void migrateUp(Long toVersion, Iterable<IMigration> migrations) {
         for (IMigration migration : migrations) {
             Long version = migration.getVersion();
             if (currentDbVersion < version && version <= toVersion) {
@@ -180,55 +183,36 @@ public class JailsProject {
     }
 
     private boolean createMigrationPropertiesFile() {
-        try {
-            FileUtil.createFile(migrationsPropertiesFile);
-            FileWriter fileWriter = new FileWriter(migrationsPropertiesFile);
-            fileWriter.write(
-                    "# This file is auto generated. Instead of editing this file, please use the\n" +
-                            "# migrations feature of Jails to incrementally modify your database, and\n" +
-                            "# then regenerate this version file.\n" +
-                            "development=0\n" +
-                            "test=0\n" +
-                            "production=0");
-            fileWriter.flush();
-            fileWriter.close();
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
+        String content = "# This file is auto generated. Instead of editing this file, please use the\n" +
+                "# migrations feature of Jails to incrementally modify your database, and\n" +
+                "# then regenerate this version file.\n" +
+                "development=0\n" +
+                "test=0\n" +
+                "production=0";
+        return FileUtil.createFileWithContent(migrationsPropertiesFile, content);
     }
 
     private boolean createDatabasePropertiesFile() {
-        try {
-            FileUtil.createFile(dbPropertiesFile);
-            FileWriter fileWriter = new FileWriter(dbPropertiesFile);
-            fileWriter.write("# This file is auto generated. Please provide the database details in here.\n" +
-                    "development.adapter=mysql\n" +
-                    "development.url=jdbc:mysql://localhost:3306/\n" +
-                    "development.driver=com.mysql.jdbc.Driver\n" +
-                    "development.name=jails_development\n" +
-                    "development.user=root\n" +
-                    "development.password=password\n\n" +
-                    "test.adapter=mysql\n" +
-                    "test.url=jdbc:mysql://localhost:3306/\n" +
-                    "test.driver=com.mysql.jdbc.Driver\n" +
-                    "test.name=jails_test\n" +
-                    "test.user=root\n" +
-                    "test.password=password\n\n" +
-                    "production.adapter=mysql\n" +
-                    "production.url=jdbc:mysql://localhost:3306/\n" +
-                    "production.driver=com.mysql.jdbc.Driver\n" +
-                    "production.name=jails_production\n" +
-                    "production.user=root\n" +
-                    "production.password=password\n\n");
-            fileWriter.flush();
-            fileWriter.close();
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
+        String content = "# This file is auto generated. Please provide the database details in here.\n" +
+                "development.adapter=mysql\n" +
+                "development.url=jdbc:mysql://localhost:3306/\n" +
+                "development.driver=com.mysql.jdbc.Driver\n" +
+                "development.name=jails_development\n" +
+                "development.user=root\n" +
+                "development.password=password\n\n" +
+                "test.adapter=mysql\n" +
+                "test.url=jdbc:mysql://localhost:3306/\n" +
+                "test.driver=com.mysql.jdbc.Driver\n" +
+                "test.name=jails_test\n" +
+                "test.user=root\n" +
+                "test.password=password\n\n" +
+                "production.adapter=mysql\n" +
+                "production.url=jdbc:mysql://localhost:3306/\n" +
+                "production.driver=com.mysql.jdbc.Driver\n" +
+                "production.name=jails_production\n" +
+                "production.user=root\n" +
+                "production.password=password\n\n";
+        return FileUtil.createFileWithContent(dbPropertiesFile, content);
     }
 
     private void updateCurrentDbVersion() {

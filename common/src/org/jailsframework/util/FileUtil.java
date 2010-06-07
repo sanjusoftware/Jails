@@ -1,7 +1,9 @@
 package org.jailsframework.util;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
@@ -39,6 +41,20 @@ public class FileUtil {
             return file.createNewFile();
         } catch (IOException e) {
             System.out.println("Error creating the file = " + file.getAbsolutePath());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean createFileWithContent(File file, String content) {
+        try {
+            createFile(file);
+            OutputStreamWriter fileWriter = new FileWriter(file);
+            fileWriter.write(content);
+            fileWriter.flush();
+            fileWriter.close();
+            return true;
+        } catch (IOException e) {
             e.printStackTrace();
             return false;
         }

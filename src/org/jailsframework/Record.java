@@ -1,6 +1,7 @@
 package org.jailsframework;
 
 import org.jailsframework.database.Column;
+import org.jailsframework.database.IDatabase;
 import org.jailsframework.querybuilder.Insert;
 import org.jailsframework.util.StringUtil;
 
@@ -14,9 +15,10 @@ import java.util.List;
  */
 public abstract class Record implements IRecord {
     private List<Column> columns;
+    private IDatabase database;
 
     public boolean create() {
-        new Insert().into(table()).values(columns);
+        database.executeUpdate(new Insert().into(table()).values(columns).build());
         return false;
     }
 
