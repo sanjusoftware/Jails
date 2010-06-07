@@ -15,7 +15,6 @@ public class StringUtilTest {
     public void shouldCamelizeGivenString() {
         Assert.assertEquals("Employee", new StringUtil("employee").camelize());
         Assert.assertEquals("EmpLoyee", new StringUtil("empLoyee").camelize());
-        Assert.assertEquals("Eemployee", new StringUtil("eemployee").camelize());
         Assert.assertEquals("Employee", new StringUtil("Employee").camelize());
         Assert.assertEquals("EmployeeRecordFile", new StringUtil("employee_record_file").camelize());
     }

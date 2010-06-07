@@ -18,6 +18,6 @@ public class MigrationGeneratorTest extends JailsProjectTestBase {
     @Test
     public void shouldGenerateNewMigrationWithTheGivenName() {
         Assert.assertTrue(new MigrationGenerator(project).generate("migrationFileName"));
-        Assert.assertTrue(new File(project.getMigrationsPath()).listFiles()[0].getName().contains("migrationFileName"));
+        Assert.assertTrue(new File(project.getMigrationsPath()).listFiles()[0].getName().endsWith("MigrationFileName.java"));
     }
 }
