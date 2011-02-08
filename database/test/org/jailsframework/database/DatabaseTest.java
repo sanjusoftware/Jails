@@ -8,6 +8,8 @@ import org.junit.Test;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static junit.framework.Assert.fail;
+
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
  * @version $Revision: 0.1
@@ -18,29 +20,36 @@ public class DatabaseTest {
 
     @Before
     public void setUp() {
-        getDatabase().executeUpdate("TRUNCATE users");
+        getDatabase().execute("CREATE TABLE IF NOT EXISTS USERS (name VARCHAR(25))");
         getDatabase().executeUpdate("INSERT INTO USERS VALUES ('test')");
     }
 
     @After
     public void tearDown() {
-        getDatabase().executeUpdate("TRUNCATE users");
+        getDatabase().executeUpdate("TRUNCATE TABLE USERS");
     }
-
 
     @Test
     public void shouldExecuteAGivenInsertQuery() {
-        getDatabase().executeUpdate("TRUNCATE users");
+        getDatabase().executeUpdate("TRUNCATE TABLE USERS");
         int result = getDatabase().executeUpdate("INSERT INTO USERS VALUES ('sanjeev')");
         Assert.assertEquals(1, result);
         assertSelectReturns("sanjeev");
     }
 
     @Test
-    public void shouldExecuteAGivenDeleteQuery() {
+    public void shouldExecuteAGivenUpdateQuery() {
         int result = getDatabase().executeUpdate("UPDATE USERS SET name = 'new name' WHERE name = 'test'");
         Assert.assertEquals(1, result);
         assertSelectReturns("new name");
+    }
+
+    @Test
+    public void shouldExecuteADeleteQuery() {
+        assertSelectReturns("test");
+        int result = getDatabase().executeUpdate("DELETE FROM USERS WHERE name = 'test'");
+        Assert.assertEquals(1, result);
+        assertSelectThrowsException();
     }
 
     @Test
@@ -64,7 +73,18 @@ public class DatabaseTest {
         }
     }
 
+    private void assertSelectThrowsException() {
+        ResultSet resultSet = getDatabase().executeQuery("Select * from users");
+        try {
+            resultSet.next();
+            resultSet.getString("name");
+            fail("Should have thrown exception");
+        } catch (Exception e) {
+
+        }
+    }
+
     private IDatabase getDatabase() {
-        return new MysqlDatabase("jdbc:mysql://localhost:3306/", "com.mysql.jdbc.Driver", "test", "root", "");
+        return new MysqlDatabase("jdbc:mysql://localhost:3306/", "com.mysql.jdbc.Driver", "test", "root", "secret");
     }
 }

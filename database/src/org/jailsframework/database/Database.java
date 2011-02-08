@@ -1,7 +1,6 @@
 package org.jailsframework.database;
 
 import com.sun.rowset.CachedRowSetImpl;
-import org.jailsframework.exceptions.JailsException;
 
 import java.sql.*;
 
@@ -36,7 +35,7 @@ public abstract class Database implements IDatabase {
             return statement.execute(query);
         }
         catch (Exception e) {
-            throw new JailsException("Error executing query: " + e);
+            throw new DBException("Error executing query: " + e);
         } finally {
             closeConnection();
         }
@@ -53,7 +52,7 @@ public abstract class Database implements IDatabase {
             return cachedRowSet;
         }
         catch (Exception e) {
-            throw new JailsException("Error executing query: " + e);
+            throw new DBException("Error executing query: " + e);
         } finally {
             closeConnection();
         }
@@ -67,7 +66,7 @@ public abstract class Database implements IDatabase {
             return statement.executeUpdate(query);
         }
         catch (Exception e) {
-            throw new JailsException("Error executing query: " + e);
+            throw new DBException("Error executing query: " + e);
         } finally {
             closeConnection();
         }
@@ -78,7 +77,7 @@ public abstract class Database implements IDatabase {
             Class.forName(driver);
         }
         catch (Exception e) {
-            throw new JailsException("Unable to load the driver class!" + e);
+            throw new DBException("Unable to load the driver class!" + e);
         }
         return true;
     }
@@ -87,7 +86,7 @@ public abstract class Database implements IDatabase {
         if (connection != null) try {
             connection.close();
         } catch (SQLException e) {
-            throw new JailsException("Could not close connection!" + e);
+            throw new DBException("Could not close connection!" + e);
         }
     }
 }
