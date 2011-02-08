@@ -18,7 +18,7 @@ public abstract class Record implements IRecord {
     private IDatabase database;
 
     public boolean create() {
-        database.executeUpdate(new Insert().into(table()).values(columns).build());
+        database.executeUpdate(new Insert().into(table()).values(columns).query());
         return false;
     }
 

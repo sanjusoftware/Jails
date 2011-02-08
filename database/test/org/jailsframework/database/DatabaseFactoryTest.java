@@ -13,12 +13,12 @@ public class DatabaseFactoryTest {
 
     @Test(expected = DBException.class)
     public void shouldThroughUnsupportedDatabaseExceptionIfAdapterNotSupported() {
-        new DatabaseFactory(this.toString()).getDatabase("url", null, null, null, null);
+        new DatabaseFactory().getDatabase(this.toString(), "url", null, null, null, null);
     }
 
     @Test
     public void shouldReturnMySQLDatabaseInstanceIfGivenMYSQLAdapter() {
         Assert.assertTrue(
-                new DatabaseFactory("mysql").getDatabase("url", null, null, null, null) instanceof MysqlDatabase);
+                new DatabaseFactory().getDatabase("mysql", "url", null, null, null, null) instanceof MysqlDatabase);
     }
 }

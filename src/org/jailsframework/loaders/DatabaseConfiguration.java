@@ -44,8 +44,7 @@ public class DatabaseConfiguration {
 
     public IDatabase getDatabase() {
         if (database == null) {
-            database = new DatabaseFactory(
-                    getProperty("adapter")).getDatabase(
+            database = new DatabaseFactory().getDatabase(getProperty("adapter"),
                     getProperty("url"),
                     getProperty("driver"),
                     getProperty("name"),

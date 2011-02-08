@@ -15,18 +15,19 @@ import org.junit.Test;
 public class CreateTest {
 
     @Test
-    public void shouldBuildTheCreateQueryNewTableGivenNameAndColumns() {
+    public void shouldBuildTheCreateNewTableQueryGivenNameAndColumns() {
         Assert.assertEquals("CREATE TABLE employee (name VARCHAR, age INT)",
                 new Create(new Table("employee").
                         addColumns(new Column("name", DataType.VARCHAR),
-                        new Column("age", DataType.INT))).build());
+                        new Column("age", DataType.INT))).query());
     }
 
     @Test
-    public void shouldCreateNewTableGivenTableNameAndColumnsWithSize() {
+    public void shouldBuildTheCreateNewTableQueryGivenNameAndColumnsWithSize() {
         Assert.assertEquals("CREATE TABLE employee (name VARCHAR(255), age INT)",
                 new Create(new Table("employee").
                         addColumns(new Column("name", DataType.VARCHAR, 255),
-                        new Column("age", DataType.INT))).build());
+                        new Column("age", DataType.INT))).query());
     }
+
 }

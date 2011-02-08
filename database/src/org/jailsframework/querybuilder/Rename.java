@@ -1,6 +1,6 @@
 package org.jailsframework.querybuilder;
 
-import org.jailsframework.database.DBComponent;
+import org.jailsframework.database.Table;
 
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
@@ -8,20 +8,22 @@ import org.jailsframework.database.DBComponent;
  *          Date: May 8, 2010
  *          Time: 11:16:29 PM
  */
-public class Rename implements IQueryBuilder {
-    private DBComponent dbObj;
+public class Rename extends DDLQuery {
+
+    private Table table;
     private String newName;
 
-    public Rename(DBComponent dbObj) {
-        this.dbObj = dbObj;
+    public Rename(Table table) {
+        this.table = table;
     }
 
-    public String build() {
-        return dbObj.renameQuery(newName);
-    }
-
-    public IQueryBuilder to(String newName) {
+    public DDLQuery to(String newName) {
         this.newName = newName;
         return this;
+    }
+
+    @Override
+    public String query() {
+        return "RENAME TABLE " + table.getName() + " TO " + newName;
     }
 }

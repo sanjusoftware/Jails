@@ -1,5 +1,6 @@
 package org.jailsframework.querybuilder;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,37 +10,33 @@ import java.util.List;
  *          Date: Apr 28, 2010
  *          Time: 12:11:58 PM
  */
-public class Select implements ISelectQueryBuilder {
+public class Select extends ISelectQuery {
     private String table;
     private String columns;
     private List<Where> whereClauses;
 
-    public ISelectQueryBuilder from(String table) {
+    public ISelectQuery from(String table) {
         this.table = table;
         return this;
     }
 
-    public ISelectQueryBuilder where(Where whereClause) {
+    public ISelectQuery where(Where whereClause) {
         whereClauses = new ArrayList<Where>();
         whereClauses.add(whereClause);
         return this;
     }
 
-    public ISelectQueryBuilder and(Where where) {
+    public ISelectQuery and(Where where) {
         addWhereClause(where, Operator.AND);
         return this;
     }
 
-    public ISelectQueryBuilder or(Where where) {
+    public ISelectQuery or(Where where) {
         addWhereClause(where, Operator.OR);
         return this;
     }
 
-    public String build() {
-        return "SELECT " + getColumns() + " FROM " + table + getWhereClauses() + ";";
-    }
-
-    public ISelectQueryBuilder columns(String comaSeparatedColumns) {
+    public ISelectQuery columns(String comaSeparatedColumns) {
         this.columns = comaSeparatedColumns;
         return this;
     }
@@ -63,5 +60,20 @@ public class Select implements ISelectQueryBuilder {
             fullWhereClause += whereClause.toString();
         }
         return fullWhereClause;
+    }
+
+    @Override
+    public ResultSet executeQuery() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public int executeUpdate() {
+        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public String query() {
+        return "SELECT " + getColumns() + " FROM " + table + getWhereClauses() + ";";
     }
 }

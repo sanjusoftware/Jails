@@ -28,7 +28,7 @@ public class JailsProjectTest extends JailsProjectTestBase {
         project = new JailsProject("test", "jailsproject") {
             @Override
             protected List<IMigration> getMigrations() {
-                IDatabase mysqlDatabase = new MysqlDatabase("jdbc:mysql://localhost:3306/", "com.mysql.jdbc.Driver", "test", "root", "");
+                IDatabase mysqlDatabase = new MysqlDatabase("jdbc:mysql://localhost:3306/", "com.mysql.jdbc.Driver", "test", "root", "secret");
                 List<IMigration> migrations = new ArrayList<IMigration>();
                 migrations.add(getTestMigration(1232L, mysqlDatabase));
                 migrations.add(getTestMigration(1234L, mysqlDatabase));
@@ -91,7 +91,7 @@ public class JailsProjectTest extends JailsProjectTestBase {
             }
 
             public void up() {
-                addAction(new Select().from("users").build());
+                addAction(new Select().from("users").query());
             }
 
             public void down() {

@@ -12,38 +12,38 @@ import org.junit.Test;
 public class SelectTest {
     @Test
     public void shouldBuildTheSelectQueryGivenTheTableName() {
-        Assert.assertEquals("SELECT * FROM EMPLOYEE;", new Select().from("EMPLOYEE").build());
+        Assert.assertEquals("SELECT * FROM EMPLOYEE;", new Select().from("EMPLOYEE").query());
     }
 
     @Test
     public void shouldBuildTheSelectQueryGivenTheTableNameAndColumns() {
-        Assert.assertEquals("SELECT name, age FROM EMPLOYEE;", new Select().from("EMPLOYEE").columns("name, age").build());
-        Assert.assertEquals("SELECT name, age FROM EMPLOYEE;", new Select().columns("name, age").from("EMPLOYEE").build());
+        Assert.assertEquals("SELECT name, age FROM EMPLOYEE;", new Select().from("EMPLOYEE").columns("name, age").query());
+        Assert.assertEquals("SELECT name, age FROM EMPLOYEE;", new Select().columns("name, age").from("EMPLOYEE").query());
     }
 
     @Test
     public void shouldBuildTheSelectQueryGivenSingleExternalWhereClauses() {
         Assert.assertEquals("SELECT name, age FROM EMPLOYEE WHERE id = 10;",
-                new Select().from("EMPLOYEE").columns("name, age").where(new Where("id", "10", Integer.class)).build());
+                new Select().from("EMPLOYEE").columns("name, age").where(new Where("id", "10", Integer.class)).query());
 
         Assert.assertEquals("SELECT name, age FROM EMPLOYEE WHERE id = 10;",
-                new Select().columns("name, age").where(new Where("id", "10", Integer.class)).from("EMPLOYEE").build());
+                new Select().columns("name, age").where(new Where("id", "10", Integer.class)).from("EMPLOYEE").query());
     }
 
     @Test
     public void shouldBuildTheSelectQueryGivenSingleExternalWhereClausesWithInequalityOperators() {
         Assert.assertEquals("SELECT name, age FROM EMPLOYEE WHERE id > 10;",
-                new Select().from("EMPLOYEE").columns("name, age").where(new Where("id", "10", Operator.GREATER_THAN, Integer.class)).build());
+                new Select().from("EMPLOYEE").columns("name, age").where(new Where("id", "10", Operator.GREATER_THAN, Integer.class)).query());
 
         Assert.assertEquals("SELECT name, age FROM EMPLOYEE WHERE id < 10;",
-                new Select().columns("name, age").where(new Where("id", "10", Operator.LESS_THAN, Integer.class)).from("EMPLOYEE").build());
+                new Select().columns("name, age").where(new Where("id", "10", Operator.LESS_THAN, Integer.class)).from("EMPLOYEE").query());
     }
 
     @Test
     public void shouldBuildTheSelectQueryGivenMultipleExternalWhereClausesAddedWithANDOperator() {
         Assert.assertEquals("SELECT name, age FROM EMPLOYEE WHERE age = 25 AND name = 'Sanjeev';",
                 new Select().columns("name, age").where(new Where("age", "25", Integer.class))
-                        .and(new Where("name", "Sanjeev")).from("EMPLOYEE").build());
+                        .and(new Where("name", "Sanjeev")).from("EMPLOYEE").query());
     }
 
     @Test
@@ -53,7 +53,7 @@ public class SelectTest {
                         .from("EMPLOYEE")
                         .where(new Where("age", "25", Integer.class))
                         .or(new Where("name", "Sanjeev"))
-                        .build());
+                        .query());
     }
 
     @Test
@@ -64,7 +64,7 @@ public class SelectTest {
                         .where(new Where("age", "25", Integer.class))
                         .or(new Where("name", "Sanjeev"))
                         .and(new Where("sal", "25000", Integer.class))
-                        .build());
+                        .query());
     }
 
     @Test
@@ -74,7 +74,7 @@ public class SelectTest {
                         .from("EMPLOYEE")
                         .where(new Where("age", "25", Integer.class)
                                 .and(new Where("name", "Sanjeev")))
-                        .build());
+                        .query());
     }
 
     @Test
@@ -84,7 +84,7 @@ public class SelectTest {
                         .from("EMPLOYEE")
                         .where(new Where("age", "25", Integer.class)
                                 .or(new Where("name", "Sanjeev")))
-                        .build());
+                        .query());
     }
 
     @Test
@@ -95,7 +95,7 @@ public class SelectTest {
                         .where(new Where("age", "25", Integer.class)
                                 .or(new Where("name", "Sanjeev"))
                                 .and(new Where("sal", "25000")))
-                        .build());
+                        .query());
     }
 
     @Test
@@ -106,7 +106,7 @@ public class SelectTest {
                         .where(new Where("age", "25", Integer.class)
                                 .or(new Where("name", "Sanjeev")
                                 .and(new Where("sal", "25000", Integer.class))))
-                        .build());
+                        .query());
     }
 
     @Test
@@ -118,7 +118,7 @@ public class SelectTest {
                                 .or(new Where("name", "Sanjeev"))
                                 .and(new Where("sal", "25000", Integer.class)))
                         .and(new Where("color", "Brown"))
-                        .build());
+                        .query());
     }
 
     @Test
@@ -130,6 +130,6 @@ public class SelectTest {
                                 .or(new Where("name", "Sanjeev"))
                                 .and(new Where("sal", "25000", Operator.LESS_THAN_EQUALS_TO, Integer.class)))
                         .and(new Where("color", "Brown"))
-                        .build());
+                        .query());
     }
 }

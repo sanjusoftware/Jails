@@ -14,6 +14,6 @@ public class RenameTest {
     @Test
     public void shouldRenameATableGivenTheNewName() {
         Assert.assertEquals("RENAME TABLE tbl_name TO new_tbl_name",
-                new Rename(new Table("tbl_name")).to("new_tbl_name").build());
+                new Rename(new Table("tbl_name")).to("new_tbl_name").query());
     }
 }

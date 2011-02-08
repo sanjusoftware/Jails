@@ -2,6 +2,7 @@ package org.jailsframework.querybuilder;
 
 import org.jailsframework.database.Column;
 
+import java.sql.ResultSet;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  *          Date: May 9, 2010
  *          Time: 11:13:52 AM
  */
-public class Insert implements IQueryBuilder {
+public class Insert extends DMLQuery {
     private String table;
     private List<Column> columns;
 
@@ -19,12 +20,23 @@ public class Insert implements IQueryBuilder {
         return this;
     }
 
-    public String build() {
-        return "INSERT INTO " + table + " VALUES " + columns;
-    }
-
-    public IQueryBuilder values(List<Column> columns) {
+    public DMLQuery values(List<Column> columns) {
         this.columns = columns;
         return this;
+    }
+
+    @Override
+    public String query() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public ResultSet executeQuery() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public int executeUpdate() {
+        return 0;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

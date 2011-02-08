@@ -6,7 +6,7 @@ package org.jailsframework.database;
  *          Date: May 3, 2010
  *          Time: 8:13:53 AM
  */
-public class Table implements DBComponent {
+public class Table {
     private String name;
     private Column[] columns;
 
@@ -14,20 +14,16 @@ public class Table implements DBComponent {
         this.name = name;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public Table addColumns(Column... columns) {
         this.columns = columns;
         return this;
     }
 
-    public String createQuery() {
-        return "CREATE TABLE " + name + " (" + getColumnsDefinition() + ")";
-    }
-
-    public String renameQuery(String newName) {
-        return "RENAME TABLE " + name + " TO " + newName;
-    }
-
-    private String getColumnsDefinition() {
+    public String getColumnsDefinition() {
         if (columns == null) return "";
         String columnsDefinition = "";
         for (Column column : columns) {

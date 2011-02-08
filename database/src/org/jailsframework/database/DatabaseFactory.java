@@ -7,13 +7,8 @@ package org.jailsframework.database;
  *          Time: 9:42:17 AM
  */
 public class DatabaseFactory {
-    private String adapter;
 
-    public DatabaseFactory(String adapterName) {
-        this.adapter = adapterName;
-    }
-
-    public IDatabase getDatabase(String url, String driver, String databaseName, String userName, String password) {
+    public IDatabase getDatabase(String adapter, String url, String driver, String databaseName, String userName, String password) {
         if ("mysql".equals(adapter)) {
             return new MysqlDatabase(url, driver, databaseName, userName, password);
         } else {

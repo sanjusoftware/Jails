@@ -1,6 +1,6 @@
 package org.jailsframework.querybuilder;
 
-import org.jailsframework.database.DBComponent;
+import org.jailsframework.database.Table;
 
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
@@ -8,14 +8,16 @@ import org.jailsframework.database.DBComponent;
  *          Date: May 8, 2010
  *          Time: 9:54:14 PM
  */
-public class Create implements IQueryBuilder {
-    private DBComponent dbComponent;
+public class Create extends DDLQuery {
 
-    public Create(DBComponent dbObj) {
-        this.dbComponent = dbObj;
+    private Table table;
+
+    public Create(Table table) {
+        this.table = table;
     }
 
-    public String build() {
-        return dbComponent.createQuery();
+    @Override
+    public String query() {
+        return "CREATE TABLE " + table.getName() + " (" + table.getColumnsDefinition() + ")";
     }
 }
