@@ -1,7 +1,8 @@
 package org.jailsframework.generators;
 
+import org.dbmigaret4j.migration.MigrationGenerator;
 import org.jailsframework.database.IDatabase;
-import org.jailsframework.database.migration.IMigration;
+import org.dbmigaret4j.migration.IMigration;
 import org.jailsframework.exceptions.JailsException;
 import org.jailsframework.loaders.DatabaseConfiguration;
 import org.jailsframework.util.FileUtil;
@@ -137,7 +138,7 @@ public class JailsProject {
     }
 
     public boolean addMigration(String name) {
-        return new MigrationGenerator(this).generate(name);
+        return new MigrationGenerator(this.migrationsPath, this.getMigrationPackage()).generate(name);
     }
 
     public boolean addModel(String modelName) {

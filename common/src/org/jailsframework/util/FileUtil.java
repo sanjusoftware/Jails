@@ -25,6 +25,18 @@ public class FileUtil {
         return dir.delete();
     }
 
+    public static boolean emptyDirRecursively(File dir, boolean deleteParent) {
+        if (dir.isDirectory()) {
+            String[] children = dir.list();
+            for (String child : children) {
+                if (!emptyDirRecursively(new File(dir, child), true)) {
+                    return false;
+                }
+            }
+        }
+        return !deleteParent || dir.delete();
+    }
+
     public static boolean makeDirectory(String dirPath) {
         File dir = new File(dirPath);
         if (dir.exists()) return true;

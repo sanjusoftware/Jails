@@ -4,8 +4,8 @@ import junit.framework.Assert;
 import org.jailsframework.JailsProjectTestBase;
 import org.jailsframework.database.IDatabase;
 import org.jailsframework.database.MysqlDatabase;
-import org.jailsframework.database.migration.IMigration;
-import org.jailsframework.database.migration.Migration;
+import org.dbmigaret4j.migration.IMigration;
+import org.dbmigaret4j.migration.Migration;
 import org.jailsframework.exceptions.JailsException;
 import org.jailsframework.querybuilder.Select;
 import org.junit.Before;
@@ -53,7 +53,7 @@ public class JailsProjectTest extends JailsProjectTestBase {
 
     @Test
     public void shouldGenerateAMigrationGivenAValidName() {
-        Assert.assertTrue("Should have created migration \"employee\"", project.addMigration("add_employee_table"));
+        Assert.assertTrue("Should have created org.dbmigaret4j.migration \"employee\"", project.addMigration("add_employee_table"));
     }
 
     @Test(expected = JailsException.class)

@@ -1,0 +1,7 @@
+package $package;
+
+import org.jailsframework.Record;
+
+public class $modelName extends Record {
+
+}

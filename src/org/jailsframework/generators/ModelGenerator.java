@@ -1,5 +1,6 @@
 package org.jailsframework.generators;
 
+import org.dbmigaret4j.migration.AbstractGenerator;
 import org.jailsframework.exceptions.JailsException;
 import org.jailsframework.util.FileUtil;
 
@@ -15,14 +16,16 @@ import java.util.Map;
  */
 public class ModelGenerator extends AbstractGenerator {
 
+    private JailsProject project;
+
     public ModelGenerator(JailsProject project) {
-        super(project);
+        this.project = project;
     }
 
     protected void doGenerate(String modelName) throws Exception {
         File modelFile = new File(project.getModelsPath() + "\\" + modelName + ".java");
         if (!FileUtil.createFile(modelFile)) {
-            throw new JailsException("Could not generate migration");
+            throw new JailsException("Could not generate org.dbmigaret4j.migration");
         }
         writeContent(modelFile, getSubstitutions(modelName));
     }

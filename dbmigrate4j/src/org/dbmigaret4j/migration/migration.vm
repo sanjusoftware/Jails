@@ -1,0 +1,20 @@
+package $package;
+
+import org.dbmigaret4j.migration.Migration;
+
+public class $migrationFileNameWithTimeStamp extends Migration {
+
+    private final Long version = $version;
+
+    public void up() {
+        addAction("");
+    }
+
+    public void down() {
+        addAction("");
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+}
