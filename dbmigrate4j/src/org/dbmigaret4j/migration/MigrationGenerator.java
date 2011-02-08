@@ -35,7 +35,7 @@ public class MigrationGenerator extends AbstractGenerator {
     }
 
     protected String getTemplateName() {
-        return "\\migration.vm";
+        return "migration.vm";
     }
 
     private Map<String, String> getSubstitutions(long version, String migrationFileNameWithTimeStamp) {

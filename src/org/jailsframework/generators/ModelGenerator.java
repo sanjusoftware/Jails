@@ -32,7 +32,7 @@ public class ModelGenerator extends AbstractGenerator {
 
     @Override
     protected String getTemplateName() {
-        return "\\model.vm";
+        return "model.vm";
     }
 
     private Map<String, String> getSubstitutions(String modelName) {
