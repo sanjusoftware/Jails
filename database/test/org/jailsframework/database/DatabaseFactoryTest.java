@@ -1,7 +1,6 @@
 package org.jailsframework.database;
 
 import junit.framework.Assert;
-import org.jailsframework.exceptions.JailsException;
 import org.junit.Test;
 
 /**
@@ -12,7 +11,7 @@ import org.junit.Test;
  */
 public class DatabaseFactoryTest {
 
-    @Test(expected = JailsException.class)
+    @Test(expected = DBException.class)
     public void shouldThroughUnsupportedDatabaseExceptionIfAdapterNotSupported() {
         new DatabaseFactory(this.toString()).getDatabase("url", null, null, null, null);
     }

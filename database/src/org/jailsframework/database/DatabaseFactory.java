@@ -1,7 +1,5 @@
 package org.jailsframework.database;
 
-import org.jailsframework.exceptions.JailsException;
-
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
  * @version $Revision: 0.1
@@ -19,7 +17,7 @@ public class DatabaseFactory {
         if ("mysql".equals(adapter)) {
             return new MysqlDatabase(url, driver, databaseName, userName, password);
         } else {
-            throw new JailsException("The \"" + adapter + "\" name is not yet supported !!");
+            throw new DBException("The \"" + adapter + "\" name is not yet supported !!");
         }
     }
 }
