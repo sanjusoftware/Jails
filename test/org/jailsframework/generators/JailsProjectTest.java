@@ -1,11 +1,11 @@
 package org.jailsframework.generators;
 
 import junit.framework.Assert;
+import org.dbmigaret4j.migration.IMigration;
+import org.dbmigaret4j.migration.Migration;
 import org.jailsframework.JailsProjectTestBase;
 import org.jailsframework.database.IDatabase;
 import org.jailsframework.database.MysqlDatabase;
-import org.dbmigaret4j.migration.IMigration;
-import org.dbmigaret4j.migration.Migration;
 import org.jailsframework.exceptions.JailsException;
 import org.jailsframework.querybuilder.Select;
 import org.junit.Before;
@@ -26,8 +26,8 @@ public class JailsProjectTest extends JailsProjectTestBase {
     @Before
     public void setUp() {
         project = new JailsProject("test", "jailsproject") {
-            @Override
-            protected List<IMigration> getMigrations() {
+
+            public List<IMigration> getMigrations() {
                 IDatabase mysqlDatabase = new MysqlDatabase("jdbc:mysql://localhost:3306/", "com.mysql.jdbc.Driver", "test", "root", "secret");
                 List<IMigration> migrations = new ArrayList<IMigration>();
                 migrations.add(getTestMigration(1232L, mysqlDatabase));
@@ -63,6 +63,7 @@ public class JailsProjectTest extends JailsProjectTestBase {
 
     @Test
     public void shouldMigrateUpDBToTheLatestMigrationWhenMigrated() {
+        project.addMigration("migration1");
         Assert.assertEquals("1237", project.migrate());
     }
 

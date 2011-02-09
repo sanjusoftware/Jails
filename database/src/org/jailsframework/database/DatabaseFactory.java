@@ -8,7 +8,7 @@ package org.jailsframework.database;
  */
 public class DatabaseFactory {
 
-    public IDatabase getDatabase(String adapter, String url, String driver, String databaseName, String userName, String password) {
+    public static IDatabase getDatabase(String adapter, String url, String driver, String databaseName, String userName, String password) {
         if ("mysql".equals(adapter)) {
             return new MysqlDatabase(url, driver, databaseName, userName, password);
         } else {

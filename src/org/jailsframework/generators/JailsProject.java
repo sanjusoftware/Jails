@@ -1,19 +1,12 @@
 package org.jailsframework.generators;
 
-import org.dbmigaret4j.migration.MigrationGenerator;
+import org.dbmigaret4j.migration.AbstractMigratable;
 import org.jailsframework.database.IDatabase;
-import org.dbmigaret4j.migration.IMigration;
 import org.jailsframework.exceptions.JailsException;
 import org.jailsframework.loaders.DatabaseConfiguration;
 import org.jailsframework.util.FileUtil;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
 
 /**
  * @author <a href="mailto:sanjusoftware@gmail.com">Sanjeev Mishra</a>
@@ -22,7 +15,7 @@ import java.util.Properties;
  *          Time: 12:08:43 AM
  */
 
-public class JailsProject {
+public class JailsProject extends AbstractMigratable {
     private String root;
     private String migrationsPath;
     private String dbPath;
@@ -34,9 +27,8 @@ public class JailsProject {
     private String helpersPath;
     private String name;
     private File dbPropertiesFile;
-    private File migrationsPropertiesFile;
     private String environment;
-    private Long currentDbVersion;
+    private File migrationsPropertiesFile;
 
     public JailsProject(String path, String projectName) {
         this(path, projectName, "development");
@@ -83,16 +75,8 @@ public class JailsProject {
         return modelsPath;
     }
 
-    public String getMigrationsPath() {
-        return migrationsPath;
-    }
-
     public String getModelPackage() {
         return name.toLowerCase().concat(".app.models");
-    }
-
-    public String getMigrationPackage() {
-        return name.toLowerCase().concat(".db.migrate");
     }
 
     public String getEnvironment() {
@@ -103,84 +87,26 @@ public class JailsProject {
         FileUtil.deleteDirRecursively(new File(root));
     }
 
-    protected List<IMigration> getMigrations() {
-        List<IMigration> migrations = new ArrayList<IMigration>();
-        File[] migrationFiles = new File(migrationsPath).listFiles();
-        for (File migrationFile : migrationFiles) {
-            IMigration migration = instantiate(migrationFile.getName());
-            migration.setDatabase(getDatabase());
-            migrations.add(migration);
-        }
-        return migrations;
+    public String getMigrationPackage() {
+        return name.toLowerCase().concat(".db.migrate");
     }
 
-    public String migrate() {
-        return migrate(null);
-    }
-
-    public String migrate(Long toVersion) {
-        loadCurrentDbVersion();
-        List<IMigration> migrations = getMigrations();
-        if (toVersion == null) {
-            toVersion = getLatestMigrationVersion(migrations);
-        }
-        if (currentDbVersion < toVersion) {
-            migrateUp(toVersion, migrations);
-        } else {
-            migrateDown(toVersion, migrations);
-        }
-        updateCurrentDbVersion();
-        return currentDbVersion.toString();
-    }
-
-    private Long getLatestMigrationVersion(List<IMigration> migrations) {
-        return migrations.get(migrations.size() - 1).getVersion();
-    }
-
-    public boolean addMigration(String name) {
-        return new MigrationGenerator(this.migrationsPath, this.getMigrationPackage()).generate(name);
-    }
-
-    public boolean addModel(String modelName) {
-        return new ModelGenerator(this).generate(modelName);
+    @Override
+    public String getMigrationPath() {
+        return this.migrationsPath;
     }
 
     public IDatabase getDatabase() {
         return DatabaseConfiguration.getInstance(this).getDatabase();
     }
 
-    private void migrateDown(Long toVersion, Iterable<IMigration> migrations) {
-        for (IMigration migration : migrations) {
-            Long version = migration.getVersion();
-            if (currentDbVersion > version && version >= toVersion) {
-                migration.executeDown();
-                currentDbVersion = version;
-            }
-        }
+    @Override
+    public String getMigrationsPropertiesFilePath() {
+        return dbPath + "\\versions.properties";
     }
 
-    private void migrateUp(Long toVersion, Iterable<IMigration> migrations) {
-        for (IMigration migration : migrations) {
-            Long version = migration.getVersion();
-            if (currentDbVersion < version && version <= toVersion) {
-                migration.executeUp();
-                currentDbVersion = version;
-            }
-        }
-    }
-
-    private IMigration instantiate(String fileName) {
-        try {
-            String className = getMigrationPackage().concat(".").concat(fileName.substring(0, fileName.lastIndexOf('.')));
-            return (IMigration) Class.forName(className).newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public boolean addModel(String modelName) {
+        return new ModelGenerator(this).generate(modelName);
     }
 
     private boolean createMigrationPropertiesFile() {
@@ -216,26 +142,4 @@ public class JailsProject {
         return FileUtil.createFileWithContent(dbPropertiesFile, content);
     }
 
-    private void updateCurrentDbVersion() {
-        try {
-            Properties properties = new Properties();
-            properties.load(new FileInputStream(migrationsPropertiesFile));
-            properties.setProperty(environment, currentDbVersion.toString());
-            properties.store(new FileOutputStream(migrationsPropertiesFile), null);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void loadCurrentDbVersion() {
-        try {
-            if (currentDbVersion == null) {
-                Properties properties = new Properties();
-                properties.load(new FileInputStream(migrationsPropertiesFile));
-                currentDbVersion = new Long(properties.getProperty(environment));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }
