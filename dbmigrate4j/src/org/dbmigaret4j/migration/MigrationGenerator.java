@@ -6,7 +6,6 @@ import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
-import org.jailsframework.exceptions.JailsException;
 import org.jailsframework.util.FileUtil;
 import org.jailsframework.util.StringUtil;
 
@@ -38,7 +37,7 @@ public class MigrationGenerator {
             String migrationFileNameWithTimeStamp = getMigrationFileNameWithTimeStamp(version, new StringUtil(componentFileName).camelize());
             File migrationFile = new File(migrationPath, migrationFileNameWithTimeStamp.concat(".java"));
             if (!FileUtil.createFile(migrationFile)) {
-                throw new RuntimeException("Could not generate migration");
+                throw new RuntimeException("Could not create migration file");
             }
             writeContent(migrationFile, getSubstitutions(version, migrationFileNameWithTimeStamp));
             return version;
@@ -67,7 +66,7 @@ public class MigrationGenerator {
 
     private void writeContent(File file, Map<String, String> substitutions) throws Exception {
         VelocityEngine velocityEngine = new VelocityEngine();
-        velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
+        velocityEngine.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, "dbmigrate4j/src");
         velocityEngine.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
 
         velocityEngine.init();

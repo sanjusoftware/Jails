@@ -69,6 +69,7 @@ public class AbstractMigratableTest {
     @After
     public void tearDown() {
         FileUtil.emptyDirRecursively(new File(migratable.getMigrationPath()), false);
+        setDbVersionForCurrentEnvironment("0");
     }
 
     @Test
