@@ -26,7 +26,7 @@ public class JailsProjectTest extends JailsProjectTestBase {
 
     @Test
     public void shouldGenerateAMigrationGivenAValidName() {
-        Assert.assertTrue("Should have created org.dbmigaret4j.migration \"employee\"", project.addMigration("add_employee_table"));
+        Assert.assertNotNull("Should have created org.dbmigaret4j.migration \"employee\"", project.addMigration("add_employee_table"));
     }
 
     @Test(expected = JailsException.class)

@@ -3,7 +3,6 @@ package org.dbmigaret4j.migration;
 import junit.framework.Assert;
 import org.jailsframework.util.FileUtil;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
@@ -17,7 +16,7 @@ import java.io.File;
 
 public class MigrationGeneratorTest {
 
-    private String migrationsPath = "E:/projects/java/Jails/dbmigrate4j/test/migrations";
+    private String migrationsPath = "dbmigrate4j/test/migrations";
 
     @After
     public void setUp() {
@@ -26,13 +25,7 @@ public class MigrationGeneratorTest {
 
     @Test
     public void shouldGenerateNewMigrationWithTheGivenName() {
-        Assert.assertTrue(new MigrationGenerator(migrationsPath, "migrations").generate("migrationFileName"));
+        Assert.assertNotNull(new MigrationGenerator(migrationsPath, "migrations").generate("migrationFileName"));
         Assert.assertTrue(new File(migrationsPath).listFiles()[0].getName().endsWith("MigrationFileName.java"));
     }
-
-    @Before
-    public void tearDown() {
-        FileUtil.emptyDirRecursively(new File(migrationsPath), false);
-    }
-
 }

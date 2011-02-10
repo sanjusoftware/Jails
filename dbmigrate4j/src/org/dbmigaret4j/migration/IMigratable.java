@@ -14,9 +14,11 @@ public interface IMigratable {
 
     String getMigrationsPropertiesFilePath();
 
-    String migrate();
+    Long migrate();
 
-    String migrate(Long toVersion);
+    Long migrate(Long toVersion);
 
-    boolean addMigration(String name);
+    Long addMigration(String name);
+
+    String getMigrationsClassPath();
 }

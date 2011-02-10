@@ -6,6 +6,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -18,18 +21,19 @@ public abstract class AbstractMigratable implements IMigratable {
 
     public abstract String getMigrationPath();
 
-    public String migrate() {
+    public Long migrate() {
         return migrate(null);
     }
 
-    public String migrate(Long toVersion) {
+    public Long migrate(Long toVersion) {
         loadCurrentDbVersion();
         List<IMigration> migrations = getMigrations();
         if (toVersion == null) {
             toVersion = getLatestMigrationVersion(migrations);
         }
-        if(currentDbVersion == toVersion){
-            return "Database already up to date";
+        validateVersion(migrations, toVersion);
+        if (currentDbVersion.equals(toVersion)) {
+            throw new RuntimeException("Database is already up to date");
         }
         if (currentDbVersion < toVersion) {
             migrateUp(toVersion, migrations);
@@ -37,10 +41,10 @@ public abstract class AbstractMigratable implements IMigratable {
             migrateDown(toVersion, migrations);
         }
         updateCurrentDbVersion();
-        return currentDbVersion.toString();
+        return currentDbVersion;
     }
 
-    public boolean addMigration(String name) {
+    public Long addMigration(String name) {
         return new MigrationGenerator(getMigrationPath(), getMigrationPackage()).generate(name);
     }
 
@@ -49,6 +53,18 @@ public abstract class AbstractMigratable implements IMigratable {
     public abstract String getEnvironment();
 
     public abstract String getMigrationsPropertiesFilePath();
+
+    private void validateVersion(List<IMigration> migrations, Long toVersion) {
+        boolean valid = false;
+        for (IMigration migration : migrations) {
+            if(migration.getVersion().equals(toVersion)) {
+                valid = true;
+            }
+        }
+        if (!valid){
+            throw new RuntimeException("The version provided is invalid");
+        }
+    }
 
     private Long getLatestMigrationVersion(List<IMigration> migrations) {
         if (migrations.size() == 0) {
@@ -78,13 +94,34 @@ public abstract class AbstractMigratable implements IMigratable {
     }
 
     private IMigration instantiate(File migrationFile) {
+        String migrationsClassPath = getMigrationsClassPath();
         String fileName = migrationFile.getName();
         try {
             String className = getMigrationPackage().concat(".").concat(fileName.substring(0, fileName.lastIndexOf('.')));
-            return (IMigration) Class.forName(className).newInstance();
+            if (migrationsClassPath != null) {
+                return (IMigration) Class.forName(className, true, getURLClassLoaderForMigrationsClassPath(migrationsClassPath)).newInstance();
+            } else {
+                return (IMigration) Class.forName(className).newInstance();
+            }
         } catch (Exception e) {
-            throw new RuntimeException("Could not load the migration class. Please make sure that all migrations are compiled and present in the classpath.: " + fileName + " : " + e);
+            throw new RuntimeException("Could not load the migration class : " + fileName + ". " +
+                    "\nPlease make sure that all migrations are either compiled and present in the classpath or " +
+                    "override the getMigrationsClassPath() method to provide the classpath explicitly." + e);
         }
+    }
+
+    private URLClassLoader getURLClassLoaderForMigrationsClassPath(String migrationsClassPath) {
+        URL[] urls = null;
+        try {
+            urls = new URL[]{new File(migrationsClassPath).toURI().toURL()};
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return new URLClassLoader(urls);
+    }
+
+    public String getMigrationsClassPath() {
+        return null;
     }
 
     private void updateCurrentDbVersion() {
