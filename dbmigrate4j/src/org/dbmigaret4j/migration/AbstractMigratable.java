@@ -2,8 +2,6 @@ package org.dbmigaret4j.migration;
 
 import org.jailsframework.database.IDatabase;
 
-import javax.tools.JavaCompiler;
-import javax.tools.ToolProvider;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -30,6 +28,9 @@ public abstract class AbstractMigratable implements IMigratable {
         if (toVersion == null) {
             toVersion = getLatestMigrationVersion(migrations);
         }
+        if(currentDbVersion == toVersion){
+            return "Database already up to date";
+        }
         if (currentDbVersion < toVersion) {
             migrateUp(toVersion, migrations);
         } else {
@@ -50,7 +51,9 @@ public abstract class AbstractMigratable implements IMigratable {
     public abstract String getMigrationsPropertiesFilePath();
 
     private Long getLatestMigrationVersion(List<IMigration> migrations) {
-        System.out.println("migrations = " + migrations.size());
+        if (migrations.size() == 0) {
+            throw new RuntimeException("No migrations found");
+        }
         return migrations.get(migrations.size() - 1).getVersion();
     }
 
@@ -79,22 +82,8 @@ public abstract class AbstractMigratable implements IMigratable {
         try {
             String className = getMigrationPackage().concat(".").concat(fileName.substring(0, fileName.lastIndexOf('.')));
             return (IMigration) Class.forName(className).newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private void compileMigrationFile(File migrationFile) {
-        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-        System.out.println("compiling file migrationFile = " + migrationFile.getAbsolutePath());
-        if (compiler.run(null, null, null, migrationFile.getAbsolutePath()) != 0) {
-            System.err.println("Could not compile file : " + migrationFile.getAbsolutePath());
-            System.exit(0);
+        } catch (Exception e) {
+            throw new RuntimeException("Could not load the migration class. Please make sure that all migrations are compiled and present in the classpath.: " + fileName + " : " + e);
         }
     }
 
@@ -114,8 +103,7 @@ public abstract class AbstractMigratable implements IMigratable {
         try {
             if (currentDbVersion == null) {
                 Properties properties = new Properties();
-                File migrationPropertiesFile = new File(getMigrationsPropertiesFilePath());
-                properties.load(new FileInputStream(migrationPropertiesFile));
+                properties.load(new FileInputStream(new File(getMigrationsPropertiesFilePath())));
                 currentDbVersion = new Long(properties.getProperty(getEnvironment()));
             }
         } catch (IOException e) {
@@ -125,12 +113,15 @@ public abstract class AbstractMigratable implements IMigratable {
 
     private List<IMigration> getMigrations() {
         List<IMigration> migrations = new ArrayList<IMigration>();
-        File[] migrationFiles = new File(getMigrationPath()).listFiles();
-        for (File migrationFile : migrationFiles) {
-            compileMigrationFile(migrationFile);
-            IMigration migration = instantiate(migrationFile);
-            migration.setDatabase(getDatabase());
-            migrations.add(migration);
+        File migrationsDir = new File(getMigrationPath());
+        File[] migrationClassFiles = migrationsDir.listFiles();
+
+        for (File migrationFile : migrationClassFiles) {
+            if (migrationFile.getName().startsWith("Migration") && migrationFile.getName().endsWith(".java")) {
+                IMigration migration = instantiate(migrationFile);
+                migration.setDatabase(getDatabase());
+                migrations.add(migration);
+            }
         }
         return migrations;
     }
