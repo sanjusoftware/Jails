@@ -45,7 +45,7 @@ public class ModelGenerator {
 
     private boolean writeContent(File file, Map<String, String> substitutions) throws Exception {
         VelocityEngine velocityEngine = new VelocityEngine();
-        velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
+        velocityEngine.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, "src");
         velocityEngine.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
 
         velocityEngine.init();
