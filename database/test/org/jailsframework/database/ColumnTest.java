@@ -12,11 +12,11 @@ import org.junit.Test;
 public class ColumnTest {
     @Test
     public void toStringShouldGiveTheColumnNameAndTheDataType() {
-        Assert.assertEquals("name VARCHAR", new Column("name", DataType.VARCHAR).toString());
+        Assert.assertEquals("name VARCHAR(225)", new Column("name", new VarChar()).toString());
     }
 
     @Test
     public void toStringShouldGiveNameDataTypeAndSize() {
-        Assert.assertEquals("name VARCHAR(25)", new Column("name", DataType.VARCHAR, 25).toString());
+        Assert.assertEquals("name VARCHAR(25)", new Column("name", new VarChar(25)).toString());
     }
 }

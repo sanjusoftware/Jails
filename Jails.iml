@@ -6,12 +6,12 @@
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="1.6" jdkType="JavaSDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="lib" level="project" />
-    <orderEntry type="module" module-name="Database" />
+    <orderEntry type="module" module-name="Dbmigrate4j" />
     <orderEntry type="module" module-name="Common" />
-    <orderEntry type="module" module-name="dbmigrate4j" />
+    <orderEntry type="module" module-name="Database" />
   </component>
 </module>
 

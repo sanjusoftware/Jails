@@ -1,6 +1,7 @@
 package org.dbmigaret4j.migration;
 
 import org.jailsframework.database.IDatabase;
+import org.jailsframework.database.MysqlDatabase;
 import org.jailsframework.util.FileUtil;
 import org.junit.After;
 import org.junit.Before;
@@ -29,6 +30,7 @@ public class AbstractMigratableTest {
 
     private IMigratable migratable;
     IDatabase database = createMock(IDatabase.class);
+//    IDatabase database = new MysqlDatabase("jdbc:mysql://localhost:3306/", "com.mysql.jdbc.Driver", "test", "root", "secret");
 
     @Before
     public void setUp() {
